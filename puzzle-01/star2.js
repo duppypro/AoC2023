@@ -35,7 +35,10 @@ function parse(line) {
     if (!line) {
         return
     }
-    all_digits = line.match(/\d/g)
+    all_digits = line.match(new RegExp(`\d` + digits_spelled_out.join('|'), 'g'))
+    if (!all_digits.length < 2) {
+        return
+    }
     first_digit = all_digits && all_digits[0]
     last_digit = all_digits && all_digits[all_digits.length - 1]
     calibration_value = '' + first_digit + last_digit

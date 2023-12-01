@@ -37,8 +37,8 @@ let last_digit = 0
 let calibration_value = 0
 
 function parse(line) {
-    if (!line) {
-        return
+    if (!line || line.length < 2) {
+        return null
     }
     all_digits = line.match(/\d/g)
     first_digit = all_digits && all_digits[0]
@@ -47,6 +47,8 @@ function parse(line) {
     console.log(`${calibration_value} = ${first_digit} & ${last_digit} < ${line}`)
     answer += parseInt(calibration_value, 10)
     line_num++
+
+    return calibration_value
 }
 
 async function processLineByLine() {
@@ -57,7 +59,9 @@ async function processLineByLine() {
     })
 
     for await (const line of rl) {
-        parse(line)
+        if (!parse(line)) {
+            break
+        }
     }
 
     console.log(`${answer} is the answer!`)
