@@ -37,7 +37,7 @@ function parse(line) {
         return null
     }
     all_digits = line.match(re)
-    if (!all_digits || all_digits.length < 2) {
+    if (!all_digits) {
         return true
     }
 
@@ -52,14 +52,15 @@ function parse(line) {
     // I think lines like this example are the cause: 4nine7oneighthm
     // My first attempt was matching on 'one' where it should have been 'eight'
     // try searching from right most slice until match is found
-    for (let i = all_digits.length - 1; i >= 0; i--) {
-        last_digit = all_digits
+    for (let i = line.length - 1; i >= 0; i--) {
+        all_digits = line.slice(i).match(re)
+        if (all_digits) {
+            break
+        }
     }
-    for (let i = line)
-    last_digit = digits_spelled_out.indexOf(all_digits[all_digits.length - 1])
+    last_digit = digits_spelled_out.indexOf(all_digits[0])
     if (last_digit < 0) {
-        last_digit = all_digits[all_digits.length - 1]
-        all_digits && all_digits[0]
+        last_digit = all_digits && all_digits[0]
     }
     calibration_value = '' + first_digit + last_digit
     console.log(`${calibration_value} = ${first_digit} & ${last_digit} < ${line}`)

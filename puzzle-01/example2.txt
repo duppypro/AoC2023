@@ -1,4 +1,3 @@
-For example:
 two1nine
 eightwothree
 abcone2threexyz
