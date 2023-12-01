@@ -1,0 +1,10 @@
+29 = 2 & 9 < two1nine
+83 = 8 & 3 < eightwothree
+13 = 1 & 3 < abcone2threexyz
+24 = 2 & 4 < xtwone3four
+42 = 4 & 2 < 4nineeightseven2
+14 = 1 & 4 < zoneight234
+76 = 7 & 6 < 7pqrstsixteen
+41 = 4 & 1 < a
+322 is the answer!
+322 added to clipboard!

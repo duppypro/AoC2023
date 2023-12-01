@@ -29,22 +29,44 @@ let line_num = 0
 let first_digit = 0
 let last_digit = 0
 let calibration_value = 0
-const digits_spelled_out = "zero, one, two, three, four, five, six, seven, eight, nine".split(', ')
+const digits_spelled_out = 'zero, one, two, three, four, five, six, seven, eight, nine'.split(', ')
+const re = new RegExp(`\\d|` + digits_spelled_out.join('|'))
 
 function parse(line) {
     if (!line) {
-        return
+        return null
     }
-    all_digits = line.match(new RegExp(`\d` + digits_spelled_out.join('|'), 'g'))
-    if (!all_digits.length < 2) {
-        return
+    all_digits = line.match(re)
+    if (!all_digits || all_digits.length < 2) {
+        return true
     }
-    first_digit = all_digits && all_digits[0]
-    last_digit = all_digits && all_digits[all_digits.length - 1]
+
+    first_digit = digits_spelled_out.indexOf(all_digits[0])
+    if (first_digit < 0) {
+        first_digit = all_digits && all_digits[0]
+    }
+
+    // TODO I think first_digit is working
+    // my first answer was incorrect, it was two low
+    // I think the last_digit is not working
+    // I think lines like this example are the cause: 4nine7oneighthm
+    // My first attempt was matching on 'one' where it should have been 'eight'
+    // try searching from right most slice until match is found
+    for (let i = all_digits.length - 1; i >= 0; i--) {
+        last_digit = all_digits
+    }
+    for (let i = line)
+    last_digit = digits_spelled_out.indexOf(all_digits[all_digits.length - 1])
+    if (last_digit < 0) {
+        last_digit = all_digits[all_digits.length - 1]
+        all_digits && all_digits[0]
+    }
     calibration_value = '' + first_digit + last_digit
     console.log(`${calibration_value} = ${first_digit} & ${last_digit} < ${line}`)
     answer += parseInt(calibration_value, 10)
     line_num++
+
+    return calibration_value
 }
 
 async function processLineByLine() {
@@ -55,7 +77,9 @@ async function processLineByLine() {
     })
 
     for await (const line of rl) {
-        parse(line)
+        if (!parse(line)) {
+            break
+        }
     }
 
     console.log(`${answer} is the answer!`)
