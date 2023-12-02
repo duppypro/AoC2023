@@ -1,0 +1,8 @@
+begin
+Q: 12 red, 13 green, 14 blue
+0 possible
+0 possible
+0 is the answer!
+end
+Answer is WRONG! 0 is NOT 9
+0 added to clipboard!

@@ -4,23 +4,99 @@
  *  PUZZLE-02 STAR 1
  *  https://adventofcode.com/2020/day/2
  *******************************************************************************/
-const read_lines = require('readline')
+/*******************************************************************************
+--- Day 2: Cube Conundrum ---
+You're launched high into the atmosphere! The apex of your trajectory just barely reaches the surface of a large island floating in the sky. You gently land in a fluffy pile of leaves. It's quite cold, but you don't see much snow. An Elf runs over to greet you.
 
-let answer = 0
-let min = Infinity, max = 0
+The Elf explains that you've arrived at Snow Island and apologizes for the lack of snow. He'll be happy to explain the situation, but it's a bit of a walk, so you have some time. They don't get many visitors up here; would you like to play a game in the meantime?
+
+As you walk, the Elf shows you a small bag and some cubes which are either red, green, or blue. Each time you play this game, he will hide a secret number of cubes of each color in the bag, and your goal is to figure out information about the number of cubes.
+
+To get information, once a bag has been loaded with cubes, the Elf will reach into the bag, grab a handful of random cubes, show them to you, and then put them back in the bag. He'll do this a few times per game.
+
+You play several games and record the information from each game (your puzzle input). Each game is listed with its ID number (like the 11 in Game 11: ...) followed by a semicolon-separated list of subsets of cubes that were revealed from the bag (like 3 red, 5 green, 4 blue).
+
+For example, the record of a few games might look like this:
+
+Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
+In game 1, three sets of cubes are revealed from the bag (and then put back again). The first set is 3 blue cubes and 4 red cubes; the second set is 1 red cube, 2 green cubes, and 6 blue cubes; the third set is only 2 green cubes.
+
+The Elf would first like to know which games would have been possible if the bag contained only 12 red cubes, 13 green cubes, and 14 blue cubes?
+
+In the example above, games 1, 2, and 5 would have been possible if the bag had been loaded with that configuration. However, game 3 would have been impossible because at one point the Elf showed you 20 red cubes at once; similarly, game 4 would also have been impossible because the Elf showed you 15 blue cubes at once. If you add up the IDs of the games that would have been possible, you get 8.
+
+Determine which games would have been possible if the bag had been loaded with only 12 red cubes, 13 green cubes, and 14 blue cubes. What is the sum of the IDs of those games?
+ *******************************************************************************/
+
+const read_lines = require('readline')
+function log(...t) { console.log(...t) }
+let answer = 0 // sum of game IDs that would have been possible
+let check_answer = 0
+let red = blue = green = 0
+let bag = { red, blue, green } // bag tracks the most cubes seen in a game
+let q = { red, blue, green } // q is the filter we are checking against
+let tag = draw = other = []
+let possible = false
+let id = 0
+
+function begin() {
+    // set up the problem
+    log('begin')
+}
 
 function parse(line) {
-    // Prepare ahead of time with common functions of the line we might need
-    let l = line.length
-    let parts = line.split('')
-
-    // init
-    
+    if (line.length > 200) { return false }
 
     // get to work here
+    [tag, draw, ...other] = line.split(':')
+    if (!tag || !draw || other.length > 0) { return false }
+    draw = draw.trim()
+
+    if (tag[0] == 'Q') { log(`Q: ${draw}`)
+        counts = draw.split(',').map(x => x.trim().split(' '))
+        counts.map(([count, color]) => {
+            q[color] = count
+        })
+    }
+
+    if (tag[0] == 'A') {
+        [check_answer] = draw.split(' ').map(t => t.trim())
+        check_answer = parseInt(check_answer)
+    }
+    
+    if (tag[0] == 'G') {
+        id = parseInt(tag.slice(5))
+        log(`id: ${id}, tag: ${tag}, draw: ${draw}`)
+        counts = draw.split(',').map(x => x.trim().split(' '))
+        counts.map(([count, color]) => {
+            bag[color] = count
+        })
+    }
+    
+    // check if the bag is possible
+    possible = true
+    
+    if (possible) { answer += id }
+    
+    log(answer, possible ? 'possible' : 'NOT possible')
     return true
 }
 
+function end() {
+    log('end')
+    // check the answer and log
+    if (answer == check_answer) {
+        log(`Answer is correct! ${answer} == ${check_answer}`)
+    } else {
+        log(`Answer is WRONG! ${answer} is NOT ${check_answer}`)
+    }
+}
+
+// boilerplate code
 async function line_by_line(read_lines) {
     const rl = read_lines.createInterface({
         input: process.stdin,
@@ -46,4 +122,11 @@ async function line_by_line(read_lines) {
         console.log(`${answer} added to clipboard!`)
     })
 }
-line_by_line()
+
+const solve = async () => {
+    begin()
+    await line_by_line(read_lines)
+    end()
+}
+
+solve()
