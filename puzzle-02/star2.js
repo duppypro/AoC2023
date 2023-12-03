@@ -77,16 +77,14 @@ function parse(line) {
             })
         }
         log('Game', +id, ':', bag_guess)
-        // check if the bag is possible
-        possible = true
+        // calculate min power of this set of cubes
+        power = 1
         for (color in bag_guess) {
-            if (bag_guess[color] > q[color]) {
-                possible = false
-            }
+            power *= bag_guess[color]
         }
 
-        if (possible) { answer += +id }
-        log('Game', +id, ':', possible ? 'is possible' : 'is NOT possible')
+        answer += +power
+        log('Game', +id, 'power: ', power, 'cumulative: ', answer)
     }
 
     return true

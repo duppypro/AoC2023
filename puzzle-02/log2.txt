@@ -1,15 +1,205 @@
 begin
-Game 1 : { red: 4, blue: 6, green: 2 }
-Game 1 : is NOT possible
-Game 2 : { red: 1, blue: 4, green: 3 }
-Game 2 : is NOT possible
-Game 3 : { red: 20, blue: 6, green: 13 }
-Game 3 : is NOT possible
-Game 4 : { red: 14, blue: 15, green: 3 }
-Game 4 : is NOT possible
-Game 5 : { red: 6, blue: 2, green: 3 }
-Game 5 : is NOT possible
-0 is the answer!
+Game 1 : { red: 12, blue: 15, green: 2 }
+Game 1 power:  360 cumulative:  360
+Game 2 : { red: 6, blue: 19, green: 9 }
+Game 2 power:  1026 cumulative:  1386
+Game 3 : { red: 16, blue: 8, green: 10 }
+Game 3 power:  1280 cumulative:  2666
+Game 4 : { red: 1, blue: 9, green: 20 }
+Game 4 power:  180 cumulative:  2846
+Game 5 : { red: 10, blue: 1, green: 4 }
+Game 5 power:  40 cumulative:  2886
+Game 6 : { red: 15, blue: 12, green: 11 }
+Game 6 power:  1980 cumulative:  4866
+Game 7 : { red: 6, blue: 14, green: 14 }
+Game 7 power:  1176 cumulative:  6042
+Game 8 : { red: 6, blue: 3, green: 10 }
+Game 8 power:  180 cumulative:  6222
+Game 9 : { red: 8, blue: 5, green: 2 }
+Game 9 power:  80 cumulative:  6302
+Game 10 : { red: 4, blue: 4, green: 12 }
+Game 10 power:  192 cumulative:  6494
+Game 11 : { red: 8, blue: 3, green: 2 }
+Game 11 power:  48 cumulative:  6542
+Game 12 : { red: 2, blue: 20, green: 7 }
+Game 12 power:  280 cumulative:  6822
+Game 13 : { red: 13, blue: 6, green: 19 }
+Game 13 power:  1482 cumulative:  8304
+Game 14 : { red: 1, blue: 18, green: 16 }
+Game 14 power:  288 cumulative:  8592
+Game 15 : { red: 7, blue: 6, green: 3 }
+Game 15 power:  126 cumulative:  8718
+Game 16 : { red: 17, blue: 6, green: 14 }
+Game 16 power:  1428 cumulative:  10146
+Game 17 : { red: 15, blue: 5, green: 14 }
+Game 17 power:  1050 cumulative:  11196
+Game 18 : { red: 1, blue: 12, green: 2 }
+Game 18 power:  24 cumulative:  11220
+Game 19 : { red: 11, blue: 2, green: 4 }
+Game 19 power:  88 cumulative:  11308
+Game 20 : { red: 15, blue: 12, green: 11 }
+Game 20 power:  1980 cumulative:  13288
+Game 21 : { red: 3, blue: 18, green: 14 }
+Game 21 power:  756 cumulative:  14044
+Game 22 : { red: 19, blue: 8, green: 13 }
+Game 22 power:  1976 cumulative:  16020
+Game 23 : { red: 8, blue: 1, green: 12 }
+Game 23 power:  96 cumulative:  16116
+Game 24 : { red: 9, blue: 8, green: 1 }
+Game 24 power:  72 cumulative:  16188
+Game 25 : { red: 4, blue: 5, green: 2 }
+Game 25 power:  40 cumulative:  16228
+Game 26 : { red: 12, blue: 14, green: 7 }
+Game 26 power:  1176 cumulative:  17404
+Game 27 : { red: 7, blue: 8, green: 4 }
+Game 27 power:  224 cumulative:  17628
+Game 28 : { red: 2, blue: 9, green: 10 }
+Game 28 power:  180 cumulative:  17808
+Game 29 : { red: 12, blue: 12, green: 3 }
+Game 29 power:  432 cumulative:  18240
+Game 30 : { red: 11, blue: 12, green: 13 }
+Game 30 power:  1716 cumulative:  19956
+Game 31 : { red: 9, blue: 2, green: 11 }
+Game 31 power:  198 cumulative:  20154
+Game 32 : { red: 4, blue: 12, green: 4 }
+Game 32 power:  192 cumulative:  20346
+Game 33 : { red: 20, blue: 1, green: 15 }
+Game 33 power:  300 cumulative:  20646
+Game 34 : { red: 3, blue: 5, green: 13 }
+Game 34 power:  195 cumulative:  20841
+Game 35 : { red: 6, blue: 9, green: 12 }
+Game 35 power:  648 cumulative:  21489
+Game 36 : { red: 6, blue: 9, green: 17 }
+Game 36 power:  918 cumulative:  22407
+Game 37 : { red: 5, blue: 16, green: 4 }
+Game 37 power:  320 cumulative:  22727
+Game 38 : { red: 10, blue: 8, green: 12 }
+Game 38 power:  960 cumulative:  23687
+Game 39 : { red: 1, blue: 9, green: 7 }
+Game 39 power:  63 cumulative:  23750
+Game 40 : { red: 2, blue: 14, green: 2 }
+Game 40 power:  56 cumulative:  23806
+Game 41 : { red: 1, blue: 1, green: 11 }
+Game 41 power:  11 cumulative:  23817
+Game 42 : { red: 11, blue: 7, green: 6 }
+Game 42 power:  462 cumulative:  24279
+Game 43 : { red: 7, blue: 10, green: 13 }
+Game 43 power:  910 cumulative:  25189
+Game 44 : { red: 9, blue: 5, green: 13 }
+Game 44 power:  585 cumulative:  25774
+Game 45 : { red: 15, blue: 11, green: 9 }
+Game 45 power:  1485 cumulative:  27259
+Game 46 : { red: 3, blue: 7, green: 3 }
+Game 46 power:  63 cumulative:  27322
+Game 47 : { red: 8, blue: 12, green: 8 }
+Game 47 power:  768 cumulative:  28090
+Game 48 : { red: 5, blue: 5, green: 13 }
+Game 48 power:  325 cumulative:  28415
+Game 49 : { red: 12, blue: 9, green: 3 }
+Game 49 power:  324 cumulative:  28739
+Game 50 : { red: 4, blue: 3, green: 8 }
+Game 50 power:  96 cumulative:  28835
+Game 51 : { red: 8, blue: 11, green: 7 }
+Game 51 power:  616 cumulative:  29451
+Game 52 : { red: 9, blue: 3, green: 13 }
+Game 52 power:  351 cumulative:  29802
+Game 53 : { red: 1, blue: 1, green: 9 }
+Game 53 power:  9 cumulative:  29811
+Game 54 : { red: 9, blue: 6, green: 13 }
+Game 54 power:  702 cumulative:  30513
+Game 55 : { red: 11, blue: 1, green: 12 }
+Game 55 power:  132 cumulative:  30645
+Game 56 : { red: 11, blue: 8, green: 2 }
+Game 56 power:  176 cumulative:  30821
+Game 57 : { red: 16, blue: 12, green: 11 }
+Game 57 power:  2112 cumulative:  32933
+Game 58 : { red: 5, blue: 16, green: 9 }
+Game 58 power:  720 cumulative:  33653
+Game 59 : { red: 4, blue: 7, green: 3 }
+Game 59 power:  84 cumulative:  33737
+Game 60 : { red: 16, blue: 2, green: 5 }
+Game 60 power:  160 cumulative:  33897
+Game 61 : { red: 13, blue: 1, green: 4 }
+Game 61 power:  52 cumulative:  33949
+Game 62 : { red: 8, blue: 7, green: 13 }
+Game 62 power:  728 cumulative:  34677
+Game 63 : { red: 5, blue: 6, green: 3 }
+Game 63 power:  90 cumulative:  34767
+Game 64 : { red: 18, blue: 10, green: 4 }
+Game 64 power:  720 cumulative:  35487
+Game 65 : { red: 11, blue: 3, green: 7 }
+Game 65 power:  231 cumulative:  35718
+Game 66 : { red: 11, blue: 11, green: 14 }
+Game 66 power:  1694 cumulative:  37412
+Game 67 : { red: 3, blue: 4, green: 7 }
+Game 67 power:  84 cumulative:  37496
+Game 68 : { red: 10, blue: 12, green: 11 }
+Game 68 power:  1320 cumulative:  38816
+Game 69 : { red: 2, blue: 9, green: 1 }
+Game 69 power:  18 cumulative:  38834
+Game 70 : { red: 13, blue: 6, green: 16 }
+Game 70 power:  1248 cumulative:  40082
+Game 71 : { red: 5, blue: 7, green: 11 }
+Game 71 power:  385 cumulative:  40467
+Game 72 : { red: 1, blue: 4, green: 1 }
+Game 72 power:  4 cumulative:  40471
+Game 73 : { red: 17, blue: 10, green: 19 }
+Game 73 power:  3230 cumulative:  43701
+Game 74 : { red: 18, blue: 4, green: 9 }
+Game 74 power:  648 cumulative:  44349
+Game 75 : { red: 4, blue: 19, green: 1 }
+Game 75 power:  76 cumulative:  44425
+Game 76 : { red: 9, blue: 7, green: 12 }
+Game 76 power:  756 cumulative:  45181
+Game 77 : { red: 8, blue: 6, green: 5 }
+Game 77 power:  240 cumulative:  45421
+Game 78 : { red: 1, blue: 9, green: 8 }
+Game 78 power:  72 cumulative:  45493
+Game 79 : { red: 6, blue: 4, green: 6 }
+Game 79 power:  144 cumulative:  45637
+Game 80 : { red: 14, blue: 18, green: 2 }
+Game 80 power:  504 cumulative:  46141
+Game 81 : { red: 9, blue: 13, green: 5 }
+Game 81 power:  585 cumulative:  46726
+Game 82 : { red: 15, blue: 1, green: 15 }
+Game 82 power:  225 cumulative:  46951
+Game 83 : { red: 11, blue: 2, green: 1 }
+Game 83 power:  22 cumulative:  46973
+Game 84 : { red: 8, blue: 4, green: 17 }
+Game 84 power:  544 cumulative:  47517
+Game 85 : { red: 7, blue: 5, green: 6 }
+Game 85 power:  210 cumulative:  47727
+Game 86 : { red: 17, blue: 8, green: 6 }
+Game 86 power:  816 cumulative:  48543
+Game 87 : { red: 16, blue: 4, green: 14 }
+Game 87 power:  896 cumulative:  49439
+Game 88 : { red: 6, blue: 19, green: 9 }
+Game 88 power:  1026 cumulative:  50465
+Game 89 : { red: 5, blue: 6, green: 12 }
+Game 89 power:  360 cumulative:  50825
+Game 90 : { red: 19, blue: 7, green: 4 }
+Game 90 power:  532 cumulative:  51357
+Game 91 : { red: 4, blue: 9, green: 7 }
+Game 91 power:  252 cumulative:  51609
+Game 92 : { red: 18, blue: 8, green: 6 }
+Game 92 power:  864 cumulative:  52473
+Game 93 : { red: 19, blue: 13, green: 5 }
+Game 93 power:  1235 cumulative:  53708
+Game 94 : { red: 1, blue: 9, green: 5 }
+Game 94 power:  45 cumulative:  53753
+Game 95 : { red: 1, blue: 9, green: 14 }
+Game 95 power:  126 cumulative:  53879
+Game 96 : { red: 3, blue: 7, green: 20 }
+Game 96 power:  420 cumulative:  54299
+Game 97 : { red: 7, blue: 2, green: 1 }
+Game 97 power:  14 cumulative:  54313
+Game 98 : { red: 2, blue: 13, green: 15 }
+Game 98 power:  390 cumulative:  54703
+Game 99 : { red: 14, blue: 9, green: 7 }
+Game 99 power:  882 cumulative:  55585
+Game 100 : { red: 1, blue: 8, green: 1 }
+Game 100 power:  8 cumulative:  55593
+55593 is the answer!
 end
-Answer is WRONG! 0 is NOT 2286
-0 added to clipboard!
+Answer is 55593
+55593 added to clipboard!
