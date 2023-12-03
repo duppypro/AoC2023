@@ -35,9 +35,11 @@ What is the sum of all of the gear ratios in your engine schematic?
 
 const read_lines = require('readline')
 function log(...t) { console.log(...t) }
+function err(...t) { console.error(...t) }
 let answer = 0 // so far all puzzles ask for a sum of something
 let schematic = []
 let possible_pns = new Set()
+let partnums_by_gear_y_x = {} // { y_x: [partnums] } so key.split('_') is [y, x]
 
 function parse(line) {
     // for this puzzle load the array here and parse it later
@@ -105,22 +107,24 @@ function is_valid(pn) {
 }
 
 // WARN this assumes that no number has more than 1 gear (as verified on the input sample)
-function num_gears(pn) {
+function find_gear(pn) {
     // scan all adjacent cells for a symbol
     // if found return true
     // else return false
     let { x, y, len } = pn
-    let gears = 0
-    // check the row above and below
-    // log(schematic[y - 1].slice(x - 1, x + len + 1))
-    // log(schematic[y].slice(x - 1, x + len + 1))
-    // log(schematic[y + 1].slice(x - 1, x + len + 1), '\n')
-    gears += schematic[y - 1].slice(x - 1, x + len + 1).match(/\*/ug)?.length || 0
-    gears += schematic[y + 1].slice(x - 1, x + len + 1).match(/\*/ug)?.length || 0
-    // check the column to the left and right
-    if (schematic[y][x - 1] == '*') gears += 1
-    if (schematic[y][x + len] == '*') gears += 1
-    return gears
+    let gear_y_x = ''
+    const above = schematic[y - 1].slice(x - 1, x + len + 1)
+    const below = schematic[y + 1].slice(x - 1, x + len + 1)
+    const left = schematic[y][x - 1]
+    const right = schematic[y][x + len]
+
+    if (above.includes('*')) { gear_y_x = `${y - 1}_${above.indexOf('*') + x - 1}` }
+    if (below.includes('*')) { gear_y_x = `${y + 1}_${below.indexOf('*') + x - 1}` }
+    if (left == '*') { gear_y_x = `${y}_${x - 1}` }
+    if (right == '*') { gear_y_x = `${y}_${x + len}` }
+
+    // WARN will only return last gear found,but I checked schematic for no more than 1 gear per partnum
+    return gear_y_x
 }
 
 async function line_by_line(read_lines) {
@@ -138,26 +142,43 @@ async function line_by_line(read_lines) {
 const solve = async () => {
     await line_by_line(read_lines) // in this puzzle this just loads the array
     parse_schematic() // unique to this puzzle
-    answer = 0
-    let gears = 0
     log('')
+    
+    // create a hash of gear y_x keys to partnums
     for (let pn of possible_pns) {
-        if (is_valid(pn)) {
-            answer += pn.pn
+        let gear_y_x = find_gear(pn) // return the y_x of a gear touching this partnum
+        if (gear_y_x) {
+            // if this partnum touches a gear, add it to the hash
+            partnums_by_gear_y_x[gear_y_x] = partnums_by_gear_y_x[gear_y_x] || []
+            partnums_by_gear_y_x[gear_y_x].push(pn.pn)
+            log(`Gear ${gear_y_x} touches partnums ${partnums_by_gear_y_x[gear_y_x].join(', ')}`)
         }
-        gears = num_gears(pn)
-        if (gears > 0) log(`  ${gears} gears on ${pn.pn} at ${pn.y},${pn.x} for ${pn.len} chars`)
     }
-    console.log(`${answer} is the answer!`)
-    console.error(answer)
+
+    answer = 0
+    // finally ready to iterate over all gears and calc their ratio (their product of partnums)
+    for (let gear_y_x in partnums_by_gear_y_x) {
+        let partnums = partnums_by_gear_y_x[gear_y_x]
+        if (partnums.length == 2) {
+            gear_ratio = partnums[0] * partnums[1]
+            answer += gear_ratio
+            log(`Gear ${gear_y_x} ratio ${gear_ratio}, sum of ratios:${answer}`)
+        } else {
+            log(`SKIP gear ${gear_y_x} with ${partnums.length} partnums`)
+            err(`SKIP gear ${gear_y_x} with ${partnums.length} partnums`)
+        }
+    }
+
+    log(`${answer} is the answer!`)
+    err(answer)
     // add answer to clipboard
     const { exec } = require('child_process')
     exec(`echo ${answer} | clip.exe`, (error, stdout, stderr) => {
         if (error) {
-            console.error(`clip.exe error: ${error}`)
+            err(`clip.exe error: ${error}`)
             return
         }
-        console.log(`${answer} copied to clipboard!`)
+        log(`${answer} copied to clipboard!`)
     })
 }
 solve()
