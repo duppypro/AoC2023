@@ -43,19 +43,17 @@ let possible_pns = new Set()
 
 function parse(line) {
     // for this puzzle load the array here and parse it later
-    log(line)
     schematic.push(line)
     return true
 }
 
 function parse_schematic() {
-    log('\nparse_schematic\n')
     // pad the schematic with empty lines to make it easier to parse
     schematic.unshift('.'.repeat(schematic[0].length))
     schematic.push('.'.repeat(schematic[0].length))
     schematic = schematic.map(line => `.${line}.`)
     for (let row of schematic) log(row)
-    log('\nend\n')
+    log('')
 
     let digits = new Set('0123456789')
     // iterate over the schematic
@@ -103,9 +101,9 @@ function is_valid(pn) {
     // else return false
     let { x, y, len } = pn
     // check the row above and below
-    log(schematic[y - 1].slice(x - 1, x + len + 1))
-    log(schematic[y].slice(x - 1, x + len + 1))
-    log(schematic[y + 1].slice(x - 1, x + len + 1), '\n')
+    // log(schematic[y - 1].slice(x - 1, x + len + 1))
+    // log(schematic[y].slice(x - 1, x + len + 1))
+    // log(schematic[y + 1].slice(x - 1, x + len + 1), '\n')
     if (schematic[y - 1].slice(x - 1, x + len + 1) != '.'.repeat(len + 2)) return true
     if (schematic[y + 1].slice(x - 1, x + len + 1) != '.'.repeat(len + 2)) return true
     // check the column to the left and right
@@ -130,6 +128,7 @@ const solve = async () => {
     await line_by_line(read_lines) // in this puzzle this just loads the array
     parse_schematic() // unique to this puzzle
     answer = 0
+    log('')
     for (let pn of possible_pns) {
         if (is_valid(pn)) {
             answer += pn.pn
@@ -147,7 +146,7 @@ const solve = async () => {
             console.error(`clip.exe error: ${error}`)
             return
         }
-        console.log(`${answer} added to clipboard!`)
+        console.log(`${answer} copied to clipboard!`)
     })
 }
 solve()
