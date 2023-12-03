@@ -64,16 +64,8 @@ function parse_schematic() {
     let partstr = ''
     let pn = 0
     for (let row of schematic) {
-        if (y == 0 || y == schematic.length - 1) {
-            y++
-            continue
-        }
         let x = 0
         for (let char of row) {
-            if (x == 0 || x == row.length - 1) {
-                x++
-                continue
-            }
             if (digits.has(char)) {
                 partstr += char // appending strings, char is not number type yet
             } else {
