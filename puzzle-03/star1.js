@@ -39,29 +39,23 @@ const read_lines = require('readline')
 function log(...t) { console.log(...t) }
 let answer = 0 // so far all puzzles ask for a sum of something
 let schematic = []
-let possible_partnums = new Set()
-
-function begin() {
-    // set up the problem if needed
-    log('begin')
-}
+let possible_pns = new Set()
 
 function parse(line) {
     // for this puzzle load the array here and parse it later
     log(line)
-    // add each line to the schematic array
     schematic.push(line)
     return true
 }
 
 function parse_schematic() {
     log('\nparse_schematic\n')
+    // pad the schematic with empty lines to make it easier to parse
+    schematic.unshift('.'.repeat(schematic[0].length))
+    schematic.push('.'.repeat(schematic[0].length))
+    schematic = schematic.map(line => `.${line}.`)
     for (let row of schematic) log(row)
     log('\nend\n')
-    // pad the schematic with empty lines to make it easier to parse
-    schematic.unshift(' '.repeat(schematic[0].length))
-    schematic.push(' '.repeat(schematic[0].length))
-    schematic = schematic.map(line => `.${line}.`)
 
     let digits = new Set('0123456789')
     // iterate over the schematic
@@ -70,6 +64,7 @@ function parse_schematic() {
     // WARN this assumes there no partnum '0' in the schematic
     let y = 0
     let partstr = ''
+    let pn = 0
     for (let row of schematic) {
         if (y == 0 || y == schematic.length - 1) {
             y++
@@ -83,16 +78,15 @@ function parse_schematic() {
             }
             if (digits.has(char)) {
                 partstr += char // appending strings, char is not number type yet
-                continue
             } else {
                 // here partstr is either '' or a number as string
                 if (partstr) {
-                    partnum = parseInt(partstr, 10)
+                    pn = parseInt(partstr, 10)
                     len = partstr.length
-                    possible_partnums.add(
-                        { partnum, x, y, len, }
+                    possible_pns.add(
+                        { pn, x: x-len, y, len, }
                     ) // add it as a number
-                    log(`${partnum} at ${y},${x} for ${len} chars added to possible_partnums`)
+                    log(`${pn} at ${y},${x-len} for ${len} chars added to possible_partnums`)
                     partstr = ''
                 }
             }
@@ -103,36 +97,23 @@ function parse_schematic() {
     return true
 }
 
-function is_valid(partnum) {
+function is_valid(pn) {
     // scan all adjacent cells for a symbol
     // if found return true
     // else return false
-    let { partnum: num, x, y, len } = partnum
+    let { x, y, len } = pn
     // check the row above and below
-    for (let i = x - 1; i < x + len + 1; i++) {
-        if (schematic[y + 1][x] != '.') return true
-        if (schematic[y + 1][x] != '.') return true
-    }
+    log(schematic[y - 1].slice(x - 1, x + len + 1))
+    log(schematic[y].slice(x - 1, x + len + 1))
+    log(schematic[y + 1].slice(x - 1, x + len + 1), '\n')
+    if (schematic[y - 1].slice(x - 1, x + len + 1) != '.'.repeat(len + 2)) return true
+    if (schematic[y + 1].slice(x - 1, x + len + 1) != '.'.repeat(len + 2)) return true
     // check the column to the left and right
     if (schematic[y][x - 1] != '.') return true
     if (schematic[y][x + len] != '.') return true
     return false
 }
 
-function end() {
-    log('end')
-    if (check_answer) {    // check the answer and log
-        if (answer == check_answer) {
-            log(`Answer is correct! ${answer} == ${check_answer}`)
-        } else {
-            log(`Answer is WRONG! ${answer} is NOT ${check_answer}`)
-        }
-    } else {
-        log(`Answer is ${answer}`)
-    }
-}
-
-// boilerplate code
 async function line_by_line(read_lines) {
     const rl = read_lines.createInterface({
         input: process.stdin,
@@ -143,7 +124,20 @@ async function line_by_line(read_lines) {
     for await (let line of rl) {
         parse(line)
     }
+}
 
+const solve = async () => {
+    await line_by_line(read_lines) // in this puzzle this just loads the array
+    parse_schematic() // unique to this puzzle
+    answer = 0
+    for (let pn of possible_pns) {
+        if (is_valid(pn)) {
+            answer += pn.pn
+            log(`VALID ${pn.pn} at ${pn.y},${pn.x} for ${pn.len} chars. a=${answer}`)
+        } else {
+            log(` NOT  ${pn.pn} at ${pn.y},${pn.x} for ${pn.len} chars`)
+        }
+    }
     console.log(`${answer} is the answer!`)
     console.error(answer)
     // add answer to clipboard
@@ -155,18 +149,5 @@ async function line_by_line(read_lines) {
         }
         console.log(`${answer} added to clipboard!`)
     })
-
 }
-
-const solve = async () => {
-    begin()
-    await line_by_line(read_lines) // in this puzzle this just loads the array
-    parse_schematic() // unique to this puzzle
-    for (let partnum of possible_partnums) {
-        if (is_valid(partnum)) {
-            answer += partnum.partnum
-        }
-    }
-    end()
-
 solve()
