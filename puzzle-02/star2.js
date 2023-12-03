@@ -1,67 +1,121 @@
 /*******************************************************************************
  *  (c) 2023, David 'Duppy' Proctor
  *  
- *  PUZZLE-02 STAR 1
+ *  PUZZLE-02 STAR 2 ⭐ ⭐
  *  https://adventofcode.com/2020/day/2
  *******************************************************************************/
-const readline = require('readline')
+/*******************************************************************************
+--- Part Two ---
+The Elf says they've stopped producing snow because they aren't getting any water! He isn't sure why the water stopped; however, he can show you how to get to the water source to check it out for yourself. It's just up ahead!
 
-let answer = 0
-let line_num = 0
-let first_digit = 0
-let last_digit = 0
-let calibration_value = 0
-const digits_spelled_out = 'zero, one, two, three, four, five, six, seven, eight, nine'.split(', ')
-const re = new RegExp(`\\d|` + digits_spelled_out.join('|'))
+As you continue your walk, the Elf poses a second question: in each game you played, what is the fewest number of cubes of each color that could have been in the bag to make the game possible?
 
-function parse(line) {
-    if (!line) {
-        return null
-    }
-    all_digits = line.match(re)
-    if (!all_digits) {
-        return true
-    }
+Again consider the example games from earlier:
 
-    first_digit = digits_spelled_out.indexOf(all_digits[0])
-    if (first_digit < 0) {
-        first_digit = all_digits && all_digits[0]
-    }
+Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
+In game 1, the game could have been played with as few as 4 red, 2 green, and 6 blue cubes. If any color had even one fewer cube, the game would have been impossible.
+Game 2 could have been played with a minimum of 1 red, 3 green, and 4 blue cubes.
+Game 3 must have been played with at least 20 red, 13 green, and 6 blue cubes.
+Game 4 required at least 14 red, 3 green, and 15 blue cubes.
+Game 5 needed no fewer than 6 red, 3 green, and 2 blue cubes in the bag.
+The power of a set of cubes is equal to the numbers of red, green, and blue cubes multiplied together. The power of the minimum set of cubes in game 1 is 48. In games 2-5 it was 12, 1560, 630, and 36, respectively. Adding up these five powers produces the sum 2286.
 
-    // TODO I think first_digit is working
-    // my first answer was incorrect, it was two low
-    // I think the last_digit is not working
-    // I think lines like this example are the cause: 4nine7oneighthm
-    // My first attempt was matching on 'one' where it should have been 'eight'
-    // try searching from right most slice until match is found
-    for (let i = line.length - 1; i >= 0; i--) {
-        all_digits = line.slice(i).match(re)
-        if (all_digits) {
-            break
-        }
-    }
-    last_digit = digits_spelled_out.indexOf(all_digits[0])
-    if (last_digit < 0) {
-        last_digit = all_digits && all_digits[0]
-    }
-    calibration_value = '' + first_digit + last_digit
-    console.log(`${calibration_value} = ${first_digit} & ${last_digit} < ${line}`)
-    answer += parseInt(calibration_value, 10)
-    line_num++
+For each game, find the minimum set of cubes that must have been present. What is the sum of the power of these sets? *******************************************************************************/
 
-    return calibration_value
+const read_lines = require('readline')
+function log(...t) { console.log(...t) }
+let answer = 0 // sum of game IDs that would have been possible
+let check_answer = false
+let red = blue = green = 0
+let bag_guess = { red, blue, green } // bag tracks the most cubes seen in a game
+let q = { red, blue, green } // q is the filter we are checking against
+let tag = other = []
+let draw = []
+let possible = false
+let id = 0
+// const line = ''
+
+function begin() {
+    // set up the problem
+    log('begin')
 }
 
-async function processLineByLine() {
-    const rl = readline.createInterface({
+function parse(line) {
+    if (line.length > 200) { return false }
+
+    // get to work here
+    [tag, draw, ...other] = line.split(':')
+    if (!tag || !draw || other.length > 0) { return true }
+    draw = draw.trim()
+
+    if (tag[0] == 'Q') {
+        counts = draw.split(',').map(x => x.trim().split(' '))
+        counts.map(([count, color]) => {
+            q[color] = count
+        })
+    }
+
+    if (tag[0] == 'A') {
+        [check_answer] = draw.split(' ').map(t => t.trim())
+        check_answer = parseInt(check_answer)
+    }
+
+    if (tag[0] == 'G') {
+        let draws = []
+        red = blue = green = 0
+        bag_guess = { red, blue, green } // bag tracks the most cubes seen
+        id = parseInt(tag.slice(5))
+        draws = draw.split(';').map(t => t.trim())
+        for (draw of draws) {
+            counts = draw.split(',').map(t => t.trim().split(' '))
+            counts.map(([count, color]) => {
+                bag_guess[color] = Math.max(bag_guess[color], count)
+            })
+        }
+        log('Game', +id, ':', bag_guess)
+        // check if the bag is possible
+        possible = true
+        for (color in bag_guess) {
+            if (bag_guess[color] > q[color]) {
+                possible = false
+            }
+        }
+
+        if (possible) { answer += +id }
+        log('Game', +id, ':', possible ? 'is possible' : 'is NOT possible')
+    }
+
+    return true
+}
+
+function end() {
+    log('end')
+    if (check_answer) {    // check the answer and log
+        if (answer == check_answer) {
+            log(`Answer is correct! ${answer} == ${check_answer}`)
+        } else {
+            log(`Answer is WRONG! ${answer} is NOT ${check_answer}`)
+        }
+    } else {
+        log(`Answer is ${answer}`)
+    }
+}
+
+// boilerplate code
+async function line_by_line(read_lines) {
+    const rl = read_lines.createInterface({
         input: process.stdin,
         output: process.stdout, // Change output to stdout
         crlfDelay: Infinity
     })
 
-    for await (const line of rl) {
-        if (!parse(line)) {
-            break
+    for await (let line of rl) {
+        if (line && line.length > 0) {
+            parse(line)
         }
     }
 
@@ -76,6 +130,13 @@ async function processLineByLine() {
         }
         console.log(`${answer} added to clipboard!`)
     })
+
 }
 
-processLineByLine()
+const solve = async () => {
+    begin()
+    await line_by_line(read_lines)
+    end()
+}
+
+solve()

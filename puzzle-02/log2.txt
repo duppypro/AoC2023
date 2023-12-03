@@ -1,0 +1,15 @@
+begin
+Game 1 : { red: 4, blue: 6, green: 2 }
+Game 1 : is NOT possible
+Game 2 : { red: 1, blue: 4, green: 3 }
+Game 2 : is NOT possible
+Game 3 : { red: 20, blue: 6, green: 13 }
+Game 3 : is NOT possible
+Game 4 : { red: 14, blue: 15, green: 3 }
+Game 4 : is NOT possible
+Game 5 : { red: 6, blue: 2, green: 3 }
+Game 5 : is NOT possible
+0 is the answer!
+end
+Answer is WRONG! 0 is NOT 2286
+0 added to clipboard!
