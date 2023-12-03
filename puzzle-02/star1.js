@@ -35,13 +35,15 @@ Determine which games would have been possible if the bag had been loaded with o
 const read_lines = require('readline')
 function log(...t) { console.log(...t) }
 let answer = 0 // sum of game IDs that would have been possible
-let check_answer = 0
+let check_answer = false
 let red = blue = green = 0
-let bag = { red, blue, green } // bag tracks the most cubes seen in a game
+let bag_guess = { red, blue, green } // bag tracks the most cubes seen in a game
 let q = { red, blue, green } // q is the filter we are checking against
-let tag = draw = other = []
+let tag = other = []
+let draw = []
 let possible = false
 let id = 0
+// const line = ''
 
 function begin() {
     // set up the problem
@@ -50,13 +52,13 @@ function begin() {
 
 function parse(line) {
     if (line.length > 200) { return false }
-
+    
     // get to work here
     [tag, draw, ...other] = line.split(':')
-    if (!tag || !draw || other.length > 0) { return false }
+    if (!tag || !draw || other.length > 0) { return true }
     draw = draw.trim()
-
-    if (tag[0] == 'Q') { log(`Q: ${draw}`)
+    
+    if (tag[0] == 'Q') {
         counts = draw.split(',').map(x => x.trim().split(' '))
         counts.map(([count, color]) => {
             q[color] = count
@@ -67,32 +69,45 @@ function parse(line) {
         [check_answer] = draw.split(' ').map(t => t.trim())
         check_answer = parseInt(check_answer)
     }
-    
+
     if (tag[0] == 'G') {
+        let draws = []
+        red = blue = green = 0
+        bag_guess = { red, blue, green } // bag tracks the most cubes seen
         id = parseInt(tag.slice(5))
-        log(`id: ${id}, tag: ${tag}, draw: ${draw}`)
-        counts = draw.split(',').map(x => x.trim().split(' '))
-        counts.map(([count, color]) => {
-            bag[color] = count
-        })
-    }
-    
-    // check if the bag is possible
-    possible = true
-    
-    if (possible) { answer += id }
-    
-    log(answer, possible ? 'possible' : 'NOT possible')
+        draws = draw.split(';').map(t => t.trim())
+        for (draw of draws) {
+            counts = draw.split(',').map(t => t.trim().split(' '))
+            counts.map(([count, color]) => {
+                bag_guess[color] = Math.max(bag_guess[color], count)
+            })
+        }
+        log('Game', +id, ':', bag_guess)
+        // check if the bag is possible
+        possible = true
+        for (color in bag_guess) {
+            if (bag_guess[color] > q[color]) {
+                possible = false
+            }
+        }
+
+        if (possible) { answer += +id }
+        log('Game', +id, ':', possible ? 'is possible' : 'is NOT possible')
+    }    
+
     return true
 }
 
 function end() {
     log('end')
-    // check the answer and log
-    if (answer == check_answer) {
-        log(`Answer is correct! ${answer} == ${check_answer}`)
+    if (check_answer) {    // check the answer and log
+        if (answer == check_answer) {
+            log(`Answer is correct! ${answer} == ${check_answer}`)
+        } else {
+            log(`Answer is WRONG! ${answer} is NOT ${check_answer}`)
+        }
     } else {
-        log(`Answer is WRONG! ${answer} is NOT ${check_answer}`)
+        log(`Answer is ${answer}`)
     }
 }
 
@@ -104,9 +119,9 @@ async function line_by_line(read_lines) {
         crlfDelay: Infinity
     })
 
-    for await (const line of rl) {
-        if (!line || line.length == 0 || !parse(line)) {
-            break
+    for await (let line of rl) {
+        if (line && line.length > 0) {
+            parse(line)
         }
     }
 
@@ -121,6 +136,7 @@ async function line_by_line(read_lines) {
         }
         console.log(`${answer} added to clipboard!`)
     })
+
 }
 
 const solve = async () => {

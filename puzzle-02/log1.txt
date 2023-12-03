@@ -1,8 +1,205 @@
 begin
-Q: 12 red, 13 green, 14 blue
-0 possible
-0 possible
-0 is the answer!
+Game 1 : { red: 12, blue: 15, green: 2 }
+Game 1 : is NOT possible
+Game 2 : { red: 6, blue: 19, green: 9 }
+Game 2 : is NOT possible
+Game 3 : { red: 16, blue: 8, green: 10 }
+Game 3 : is NOT possible
+Game 4 : { red: 1, blue: 9, green: 20 }
+Game 4 : is NOT possible
+Game 5 : { red: 10, blue: 1, green: 4 }
+Game 5 : is possible
+Game 6 : { red: 15, blue: 12, green: 11 }
+Game 6 : is NOT possible
+Game 7 : { red: 6, blue: 14, green: 14 }
+Game 7 : is NOT possible
+Game 8 : { red: 6, blue: 3, green: 10 }
+Game 8 : is possible
+Game 9 : { red: 8, blue: 5, green: 2 }
+Game 9 : is possible
+Game 10 : { red: 4, blue: 4, green: 12 }
+Game 10 : is possible
+Game 11 : { red: 8, blue: 3, green: 2 }
+Game 11 : is possible
+Game 12 : { red: 2, blue: 20, green: 7 }
+Game 12 : is NOT possible
+Game 13 : { red: 13, blue: 6, green: 19 }
+Game 13 : is NOT possible
+Game 14 : { red: 1, blue: 18, green: 16 }
+Game 14 : is NOT possible
+Game 15 : { red: 7, blue: 6, green: 3 }
+Game 15 : is possible
+Game 16 : { red: 17, blue: 6, green: 14 }
+Game 16 : is NOT possible
+Game 17 : { red: 15, blue: 5, green: 14 }
+Game 17 : is NOT possible
+Game 18 : { red: 1, blue: 12, green: 2 }
+Game 18 : is possible
+Game 19 : { red: 11, blue: 2, green: 4 }
+Game 19 : is possible
+Game 20 : { red: 15, blue: 12, green: 11 }
+Game 20 : is NOT possible
+Game 21 : { red: 3, blue: 18, green: 14 }
+Game 21 : is NOT possible
+Game 22 : { red: 19, blue: 8, green: 13 }
+Game 22 : is NOT possible
+Game 23 : { red: 8, blue: 1, green: 12 }
+Game 23 : is possible
+Game 24 : { red: 9, blue: 8, green: 1 }
+Game 24 : is possible
+Game 25 : { red: 4, blue: 5, green: 2 }
+Game 25 : is possible
+Game 26 : { red: 12, blue: 14, green: 7 }
+Game 26 : is possible
+Game 27 : { red: 7, blue: 8, green: 4 }
+Game 27 : is possible
+Game 28 : { red: 2, blue: 9, green: 10 }
+Game 28 : is possible
+Game 29 : { red: 12, blue: 12, green: 3 }
+Game 29 : is possible
+Game 30 : { red: 11, blue: 12, green: 13 }
+Game 30 : is possible
+Game 31 : { red: 9, blue: 2, green: 11 }
+Game 31 : is possible
+Game 32 : { red: 4, blue: 12, green: 4 }
+Game 32 : is possible
+Game 33 : { red: 20, blue: 1, green: 15 }
+Game 33 : is NOT possible
+Game 34 : { red: 3, blue: 5, green: 13 }
+Game 34 : is possible
+Game 35 : { red: 6, blue: 9, green: 12 }
+Game 35 : is possible
+Game 36 : { red: 6, blue: 9, green: 17 }
+Game 36 : is NOT possible
+Game 37 : { red: 5, blue: 16, green: 4 }
+Game 37 : is NOT possible
+Game 38 : { red: 10, blue: 8, green: 12 }
+Game 38 : is possible
+Game 39 : { red: 1, blue: 9, green: 7 }
+Game 39 : is possible
+Game 40 : { red: 2, blue: 14, green: 2 }
+Game 40 : is possible
+Game 41 : { red: 1, blue: 1, green: 11 }
+Game 41 : is possible
+Game 42 : { red: 11, blue: 7, green: 6 }
+Game 42 : is possible
+Game 43 : { red: 7, blue: 10, green: 13 }
+Game 43 : is possible
+Game 44 : { red: 9, blue: 5, green: 13 }
+Game 44 : is possible
+Game 45 : { red: 15, blue: 11, green: 9 }
+Game 45 : is NOT possible
+Game 46 : { red: 3, blue: 7, green: 3 }
+Game 46 : is possible
+Game 47 : { red: 8, blue: 12, green: 8 }
+Game 47 : is possible
+Game 48 : { red: 5, blue: 5, green: 13 }
+Game 48 : is possible
+Game 49 : { red: 12, blue: 9, green: 3 }
+Game 49 : is possible
+Game 50 : { red: 4, blue: 3, green: 8 }
+Game 50 : is possible
+Game 51 : { red: 8, blue: 11, green: 7 }
+Game 51 : is possible
+Game 52 : { red: 9, blue: 3, green: 13 }
+Game 52 : is possible
+Game 53 : { red: 1, blue: 1, green: 9 }
+Game 53 : is possible
+Game 54 : { red: 9, blue: 6, green: 13 }
+Game 54 : is possible
+Game 55 : { red: 11, blue: 1, green: 12 }
+Game 55 : is possible
+Game 56 : { red: 11, blue: 8, green: 2 }
+Game 56 : is possible
+Game 57 : { red: 16, blue: 12, green: 11 }
+Game 57 : is NOT possible
+Game 58 : { red: 5, blue: 16, green: 9 }
+Game 58 : is NOT possible
+Game 59 : { red: 4, blue: 7, green: 3 }
+Game 59 : is possible
+Game 60 : { red: 16, blue: 2, green: 5 }
+Game 60 : is NOT possible
+Game 61 : { red: 13, blue: 1, green: 4 }
+Game 61 : is NOT possible
+Game 62 : { red: 8, blue: 7, green: 13 }
+Game 62 : is possible
+Game 63 : { red: 5, blue: 6, green: 3 }
+Game 63 : is possible
+Game 64 : { red: 18, blue: 10, green: 4 }
+Game 64 : is NOT possible
+Game 65 : { red: 11, blue: 3, green: 7 }
+Game 65 : is possible
+Game 66 : { red: 11, blue: 11, green: 14 }
+Game 66 : is NOT possible
+Game 67 : { red: 3, blue: 4, green: 7 }
+Game 67 : is possible
+Game 68 : { red: 10, blue: 12, green: 11 }
+Game 68 : is possible
+Game 69 : { red: 2, blue: 9, green: 1 }
+Game 69 : is possible
+Game 70 : { red: 13, blue: 6, green: 16 }
+Game 70 : is NOT possible
+Game 71 : { red: 5, blue: 7, green: 11 }
+Game 71 : is possible
+Game 72 : { red: 1, blue: 4, green: 1 }
+Game 72 : is possible
+Game 73 : { red: 17, blue: 10, green: 19 }
+Game 73 : is NOT possible
+Game 74 : { red: 18, blue: 4, green: 9 }
+Game 74 : is NOT possible
+Game 75 : { red: 4, blue: 19, green: 1 }
+Game 75 : is NOT possible
+Game 76 : { red: 9, blue: 7, green: 12 }
+Game 76 : is possible
+Game 77 : { red: 8, blue: 6, green: 5 }
+Game 77 : is possible
+Game 78 : { red: 1, blue: 9, green: 8 }
+Game 78 : is possible
+Game 79 : { red: 6, blue: 4, green: 6 }
+Game 79 : is possible
+Game 80 : { red: 14, blue: 18, green: 2 }
+Game 80 : is NOT possible
+Game 81 : { red: 9, blue: 13, green: 5 }
+Game 81 : is possible
+Game 82 : { red: 15, blue: 1, green: 15 }
+Game 82 : is NOT possible
+Game 83 : { red: 11, blue: 2, green: 1 }
+Game 83 : is possible
+Game 84 : { red: 8, blue: 4, green: 17 }
+Game 84 : is NOT possible
+Game 85 : { red: 7, blue: 5, green: 6 }
+Game 85 : is possible
+Game 86 : { red: 17, blue: 8, green: 6 }
+Game 86 : is NOT possible
+Game 87 : { red: 16, blue: 4, green: 14 }
+Game 87 : is NOT possible
+Game 88 : { red: 6, blue: 19, green: 9 }
+Game 88 : is NOT possible
+Game 89 : { red: 5, blue: 6, green: 12 }
+Game 89 : is possible
+Game 90 : { red: 19, blue: 7, green: 4 }
+Game 90 : is NOT possible
+Game 91 : { red: 4, blue: 9, green: 7 }
+Game 91 : is possible
+Game 92 : { red: 18, blue: 8, green: 6 }
+Game 92 : is NOT possible
+Game 93 : { red: 19, blue: 13, green: 5 }
+Game 93 : is NOT possible
+Game 94 : { red: 1, blue: 9, green: 5 }
+Game 94 : is possible
+Game 95 : { red: 1, blue: 9, green: 14 }
+Game 95 : is NOT possible
+Game 96 : { red: 3, blue: 7, green: 20 }
+Game 96 : is NOT possible
+Game 97 : { red: 7, blue: 2, green: 1 }
+Game 97 : is possible
+Game 98 : { red: 2, blue: 13, green: 15 }
+Game 98 : is NOT possible
+Game 99 : { red: 14, blue: 9, green: 7 }
+Game 99 : is NOT possible
+Game 100 : { red: 1, blue: 8, green: 1 }
+Game 100 : is possible
+2913 is the answer!
 end
-Answer is WRONG! 0 is NOT 9
-0 added to clipboard!
+Answer is 2913
+2913 added to clipboard!
