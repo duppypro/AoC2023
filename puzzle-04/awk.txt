@@ -1,0 +1,7 @@
+Card 1: You matched 83, 86, 17, 48, score = 8, answer=8
+Card 2: You matched 61, 32, score = 2, answer=10
+Card 3: You matched 21, 1, score = 2, answer=12
+Card 4: You matched 84, score = 1, answer=13
+Card 5: You matched score = 0, answer=13
+Card 6: You matched score = 0, answer=13
+answer=13
