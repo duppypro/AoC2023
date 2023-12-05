@@ -28,48 +28,70 @@
 # Process all of the original and copied scratchcards until no more scratchcards are won. Including the original set of scratchcards, how many total scratchcards do you end up with?
 
 BEGIN {
-    answer = 0 # not strictly necessary, all variables are initialized to 0, and arrays to empty
+    # need to make all_cards an array so
+    delete all_cards # same as all_cards = []
 }
 
 END {
-    print "ANSWER " answer
+    # now that we know how many matches each card has, we can add the extra cards to the end of the list
+    count = 0
+    while (count+1 <= length(all_cards)) {
+        count++
+        # look up how many cards won and push to the end of the list
+        id = all_cards[count]
+        cards_won = cards_won_from[id]
+        win_card = id + 1 # start at the next card
+        n = 0
+        while (n < cards_won) {
+            # push win_card onto the end of the list
+            all_cards[length(all_cards) + 1] = win_card
+            win_card++
+            n++
+        }
+    }
+
+    print "ANSWER " length(all_cards) " same as " count " ?"
 }
 
 /^Card/ { # only process lines that start with 'Card'
     # in awk, $0 is the whole line, $1 is the first field, $2 is the second field, etc.
     # NF is the number of fields in the line
     # fields are separated by whitespace by default
-    printf "%s %s You matched ", $1, $2
-    delete winners # same as winners = [] 
+    id = +$2 # +$2 converts $2 to a number
+    printf "%s %s has ", $1, id
+    delete this_card_winners # same as winners = [] 
     matches = 0
+
+    # calculate number of matches
     field = 3 # skip over field $1 'Card' and field $2 ID:
     # $field is the contents of field number 'field'
-    while($field != "|" && field <= NF) {
+    while ($field != "|" && field <= NF) {
         # winners is an associative array as are all arrays in awk
         # "Match!" could be anything truthy, we just want to make the key exist
-        winners[+$field] = "Match!"
+        this_card_winners[+$field] = "Match!"
         field++
     }
     field++ # skip '|'
-    while(field <= NF) {
-        if(+$field in winners) {
-            printf "%d, ", $field
+    while (field <= NF) {
+        if (+$field in this_card_winners) {
             matches++
         }
         field++
     }
-    if (matches > 0) {
-        score = 2 ** (matches-1)
-        answer += score
-    } else {
-        score = 0
-    }
-    printf "-> score %d, answer %d\n", score, answer
+    cards_won_from[id] = matches
+    printf "%d matches", matches
+    printf "\n"
+
+    # push this id onto list of all cards
+    all_cards[length(all_cards) + 1] = id
 }
 
-# not strictly necessary, skip over any lines that don't start with 'Card'
-# unless they start with '#' which is a comment
-!/^Card/ && !/^\t*#/ {
-    # Error/skip on unrecognized line
-    printf "ERROR: Expected 'Card ', got '%s'\n", $1
+/^ *#+/ {
+    print $0
+}
+
+# not strictly necessary, skip over lines that don't start with 'Card'
+# and don't start with '#' which is a comment
+!(/^Card/ || /^ *#+/){
+    print "ERROR:" $0
 }
