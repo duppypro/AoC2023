@@ -46,7 +46,6 @@ function parse(line) {
         first_digit = all_digits && all_digits[0]
     }
 
-    // TODO I think first_digit is working
     // my first answer was incorrect, it was two low
     // I think the last_digit is not working
     // I think lines like this example are the cause: 4nine7oneighthm
