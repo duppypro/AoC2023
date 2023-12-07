@@ -1,5 +1,6 @@
 ##########################################
 ############ PASSED sample.txt ###########
+############# FAIL input.txt #############
 ##########################################
 
 # --- Part Two ---
@@ -40,6 +41,8 @@ function closest(array, min, i) {
         while (seed_id < seed_ranges[range_num] + seed_ranges[range_num + 1]) {
             # push seed_id onto location_yet
             location_yet[length(location_yet) + 1] = seed_id
+            # BUG: #1 pushing the range expansion was a good idea for sample
+            # FAIL but for input.txt the first range size is 187,012,821 !!!!
             seed_id++
         }
         printf "\n"
