@@ -1,5 +1,5 @@
 ##########################################
-############ PASSED input.txt ############
+############ NOT TESTED ############
 ##########################################
 
 # --- Day 5: If You Give A Seed A Fertilizer ---
@@ -99,13 +99,13 @@
 
 BEGIN { true = 1; false = 0 }
 
-{sub(/\r$/, "", $NF)} # fix Windows line endings
-
 function closest(array, min, i) {
     min = 1.0e100 # something bigger than any of the ids
     for (i in array) { if (array[i] < min) { min = array[i] }}
     return min
 }
+
+{sub(/\r$/, "", $NF)} # fix Windows line endings
 
 /^seeds:/ {
     print $1
