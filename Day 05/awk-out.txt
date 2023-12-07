@@ -1,25 +1,29 @@
 seeds:
- 79 14 55 13
+Expand range: from 79 for 14
+
+Expand range: from 55 for 13
+
+ 79 from 1 80 from 2 81 from 3 82 from 4 83 from 5 84 from 6 85 from 7 86 from 8 87 from 9 88 from 10 89 from 11 90 from 12 91 from 13 92 from 14 55 from 15 56 from 16 57 from 17 58 from 18 59 from 19 60 from 20 61 from 21 62 from 22 63 from 23 64 from 24 65 from 25 66 from 26 67 from 27
 
 apply map: seed-to-soil
- 81 14 57 13
+ 81 from 1 82 from 2 83 from 3 84 from 4 85 from 5 86 from 6 87 from 7 88 from 8 89 from 9 90 from 10 91 from 11 92 from 12 93 from 13 94 from 14 57 from 15 58 from 16 59 from 17 60 from 18 61 from 19 62 from 20 63 from 21 64 from 22 65 from 23 66 from 24 67 from 25 68 from 26 69 from 27
 
 apply map: soil-to-fertilizer
- 81 53 57 52
+ 81 from 1 82 from 2 83 from 3 84 from 4 85 from 5 86 from 6 87 from 7 88 from 8 89 from 9 90 from 10 91 from 11 92 from 12 93 from 13 94 from 14 57 from 15 58 from 16 59 from 17 60 from 18 61 from 19 62 from 20 63 from 21 64 from 22 65 from 23 66 from 24 67 from 25 68 from 26 69 from 27
 
 apply map: fertilizer-to-water
- 81 49 53 41
+ 81 from 1 82 from 2 83 from 3 84 from 4 85 from 5 86 from 6 87 from 7 88 from 8 89 from 9 90 from 10 91 from 11 92 from 12 93 from 13 94 from 14 53 from 15 54 from 16 55 from 17 56 from 18 61 from 19 62 from 20 63 from 21 64 from 22 65 from 23 66 from 24 67 from 25 68 from 26 69 from 27
 
 apply map: water-to-light
- 74 42 46 34
+ 74 from 1 75 from 2 76 from 3 77 from 4 78 from 5 79 from 6 80 from 7 81 from 8 82 from 9 83 from 10 84 from 11 85 from 12 86 from 13 87 from 14 46 from 15 47 from 16 48 from 17 49 from 18 54 from 19 55 from 20 56 from 21 57 from 22 58 from 23 59 from 24 60 from 25 61 from 26 62 from 27
 
 apply map: light-to-temperature
- 78 42 82 34
+ 78 from 1 79 from 2 80 from 3 45 from 4 46 from 5 47 from 6 48 from 7 49 from 8 50 from 9 51 from 10 52 from 11 53 from 12 54 from 13 55 from 14 82 from 15 83 from 16 84 from 17 85 from 18 90 from 19 91 from 20 92 from 21 93 from 22 94 from 23 95 from 24 96 from 25 97 from 26 98 from 27
 
 apply map: temperature-to-humidity
- 78 43 82 35
+ 78 from 1 79 from 2 80 from 3 46 from 4 47 from 5 48 from 6 49 from 7 50 from 8 51 from 9 52 from 10 53 from 11 54 from 12 55 from 13 56 from 14 82 from 15 83 from 16 84 from 17 85 from 18 90 from 19 91 from 20 92 from 21 93 from 22 94 from 23 95 from 24 96 from 25 97 from 26 98 from 27
 
 apply map: humidity-to-location
- 82 43 86 35
+ 82 83 84 46 47 48 49 50 51 52 53 54 55 60 86 87 88 89 94 95 96 56 57 58 59 97 98
 
-Closest location 35
+Closest location 46
