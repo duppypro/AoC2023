@@ -93,17 +93,43 @@
 
 # What is the lowest location number that corresponds to any of the initial seed numbers?
 
-BEGIN {
+BEGIN { true = 1; false = 0 }
+
+function closest(array, min, i) {
+    min = 1.0e100 # something bigger than any of the ids
+    for (i in array) { if (array[i] < min) { min = array[i] }}
+    return min
+}
+
+/^seeds:/ {
+    print $1
+    split($0, location_yet, " ")
+    delete location_yet[1] # delete the 'seeds:' string
+}
+
+/map:$/ {
+    for (seed_num in location_yet) { printf " %d", location_yet[seed_num] }
+    printf "\n\n"
+    print "apply map: " $1
+    delete map_applied
+}
+
+/^[0-9]+ [0-9]+ [0-9]+$/ {
+    # $1 dest start
+    # $2 source start
+    # $3 is range length
+    for (seed_num in location_yet) {
+        if (!map_applied[seed_num]) {
+            if (location_yet[seed_num] >= $2 && location_yet[seed_num] < $2 + $3) {
+                location_yet[seed_num] = $1 + location_yet[seed_num] - $2
+                map_applied[seed_num] = true
+            }
+        }
+    }
 }
 
 END {
-    print "Lowest(closest) location " min_location
-}
-
-
-
-
-# allow comments and output them to help debug
-/^ *#+/ {
-    print $0
+    for (seed_num in location_yet) { printf " %d", location_yet[seed_num] }
+    printf "\n\n"
+    print "Closest location " closest(location_yet)
 }
