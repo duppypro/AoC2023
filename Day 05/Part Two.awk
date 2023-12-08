@@ -22,7 +22,7 @@ function max(a,b) { return a > b ? a : b }
 function push(_array, _val) { _array[length(_array) + 1] = _val}
 
 function closest(array, min, i) {
-    min = 1.0e100 # something bigger than any of the ids
+    min = 1.0e18 # something bigger than any of the ids
     for (i in array) { if (array[i] < min) { min = array[i] }}
     return min
 }
@@ -77,27 +77,25 @@ BEGIN {
     delete map_names # likewise
     delete out_starts
     delete out_lasts
+    delete in_starts
+    delete in_lasts
 }
 
 {sub(/\r$/, "", $NF)} # fix Windows line endings
 
 /^seeds:/ {
-    print $1
+    print $0
+    printf "   "
     split($0, seed_ranges, " "); delete seed_ranges[1]
     range_num = 2
     while (range_num <= length(seed_ranges)) {
-        seed_id = seed_ranges[range_num]
-            print "Expand range: from " seed_ranges[range_num] " for " seed_ranges[range_num + 1]
-        while (seed_id < seed_ranges[range_num] + seed_ranges[range_num + 1]) {
-            # push seed_id onto location_yet
-            location_yet[length(location_yet) + 1] = seed_id
-            # BUG: #1 pushing the range expansion was a good idea for sample
-            # FAIL but for input.txt the first range size is 187,012,821 !!!!
-            seed_id++
-        }
-        printf "\n"
+        start = seed_ranges[range_num]
+        last = start + seed_ranges[range_num + 1] - 1
+        push(in_starts, start); push(in_lasts, last)
+        printf " %d-%d", start, last
         range_num += 2
     }
+    printf "\n"
 }
 
 /map:$/ {
@@ -123,7 +121,8 @@ BEGIN {
 
 END {
     printf "\n out_starts:"
-    for (i in out_starts) { printf " %d", out_starts[i] }
+    # log value of each key
+    for (key in out_starts) { printf " %d", out_starts[key] }
     printf "\n\n    Sample has closest location of 46.\n"
     print "Closest location is " closest(out_starts) "."
 }

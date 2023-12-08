@@ -1,23 +1,16 @@
-seeds:
-Expand range: from 3 for 2
+seeds: 3 2 10 1 20 6 30 9
+    3-4 10-10 20-25 30-38
 
-Expand range: from 10 for 1
-
-Expand range: from 20 for 6
-
-Expand range: from 30 for 9
-
- 3 from 1 4 from 2 10 from 3 20 from 4 21 from 5 22 from 6 23 from 7 24 from 8 25 from 9 30 from 10 31 from 11 32 from 12 33 from 13 34 from 14 35 from 15 36 from 16 37 from 17 38 from 18
 
 apply map: seed-to-soil
- 102 from 1 103 from 2 109 from 3 20 from 4 21 from 5 22 from 6 200 from 7 201 from 8 202 from 9 30 from 10 31 from 11 32 from 12 33 from 13 34 from 14 35 from 15 36 from 16 37 from 17 38 from 18
+
 
 apply map: soil-to-fertilizer
- 102 from 1 103 from 2 109 from 3 20 from 4 21 from 5 22 from 6 200 from 7 201 from 8 202 from 9 9997 from 10 9998 from 11 32 from 12 33 from 13 34 from 14 35 from 15 36 from 16 37 from 17 38 from 18
+
 
 apply map: humidity-to-location
 
  out_starts:
 
     Sample has closest location of 46.
-Closest location is 10000000000000000159028911097599180468360808563945281389781327557747838772170381060813469985856815104.
+Closest location is 1000000000000000000.
