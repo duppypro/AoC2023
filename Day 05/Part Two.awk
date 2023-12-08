@@ -17,10 +17,9 @@
 
 # Consider all of the initial seed numbers listed in the ranges on the first line of the almanac. What is the lowest location number that corresponds to any of the initial seed numbers?
 
-BEGIN {
-    true = 1; false = 0
-    delete location_yet # needed so that length() won't complain about a scalar the first time
-}
+function min(a,b) { return a < b ? a : b }
+function max(a,b) { return a > b ? a : b }
+function push(_array, _val) { _array[length(_array) + 1] = _val}
 
 function closest(array, min, i) {
     min = 1.0e100 # something bigger than any of the ids
@@ -28,12 +27,63 @@ function closest(array, min, i) {
     return min
 }
 
+function push_ranges_from_all_ranges_all_maps(_out_starts, _out_lasts, _in_starts, _in_lasts, _map_out_starts, _map_in_starts, _map_in_lasts) {
+    # for each range in _in_ranges
+    #   for each map in _map_ranges
+    #       push_ranges_from_one_range_one_map(_out_starts, _out_lasts, _in_start, _in_last, _map_out_start, _map_in_start, _map_in_last)
+    #   end for
+    # end for
+    for (i_range in _in_starts) {
+        for (i_map in _map_in_starts) {
+            push_ranges_from_one_range_one_map(_out_starts, _out_lasts, _in_starts[i_range], _in_lasts[i_range], _map_out_starts[i_map], _map_in_starts[i_map], _map_in_lasts[i_map])
+        }
+    }
+}
+
+# start and last are inclusive
+function push_ranges_from_one_range_one_map(_out_starts, _out_lasts, _in_start, _in_last, _map_out_start, _map_in_start, _map_in_last) {
+    # maximum 3 possible output ranges,
+    # only 1 of them is mapped
+    # push them on to the _out_ranges array
+    if (_in_start < _map_in_start) {
+        # push the range before the mapped range
+        push(_out_starts, _in_start)
+        if (_in_last < _map_in_start) {
+            push(_out_lasts, _in_last)
+            return
+        }
+        push(_out_lasts, _map_in_start - 1)
+        # start a new range, this part will be mapped
+        _in_start = _map_in_start
+    }
+
+    if (_in_start <= _map_in_last) {
+        push(   _out_starts, _map_out_start - _map_in_start + _in_start)
+        if (_in_last <= _map_in_last) {
+            push(_out_lasts, _map_out_start - _map_in_start + _in_last)
+            return
+        }
+        push(_out_lasts, _map_in_last)
+        _in_start = _map_in_last + 1
+    }
+    push(_out_starts, _in_start)
+    push(_out_lasts, _in_last)
+}
+
+BEGIN {
+    true = 1; false = 0
+    delete location_yet # this makes it an array
+    # so that length(location_yet) won't complain about a scalar the first time through
+    delete map_names # likewise
+    delete out_starts
+    delete out_lasts
+}
+
 {sub(/\r$/, "", $NF)} # fix Windows line endings
 
 /^seeds:/ {
     print $1
-    split($0, seed_ranges, " ")
-    delete seed_ranges[1] # delete the 'seeds:' string
+    split($0, seed_ranges, " "); delete seed_ranges[1]
     range_num = 2
     while (range_num <= length(seed_ranges)) {
         seed_id = seed_ranges[range_num]
@@ -72,7 +122,8 @@ function closest(array, min, i) {
 }
 
 END {
-    for (seed_num in location_yet) { printf " %d", location_yet[seed_num] }
-    printf "\n\n"
-    print "Closest location " closest(location_yet)
+    printf "\n out_starts:"
+    for (i in out_starts) { printf " %d", out_starts[i] }
+    printf "\n\n    Sample has closest location of 46.\n"
+    print "Closest location is " closest(out_starts) "."
 }

@@ -1,0 +1,15 @@
+seeds: 3 2 10 1 20 6 30 9
+
+seed-to-soil map:
+100 1 11
+200 23 6
+300 39 11
+500 40 42
+
+soil-to-fertilizer map:
+40005 100 123 
+9997 30 2
+
+humidity-to-location map:
+40000 100 19
+10000 80 19
