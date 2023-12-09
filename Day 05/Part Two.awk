@@ -17,13 +17,17 @@
 
 # Consider all of the initial seed numbers listed in the ranges on the first line of the almanac. What is the lowest location number that corresponds to any of the initial seed numbers?
 
-function min(a,b) { return a < b ? a : b }
+function min_of(a,b) { return a < b ? a : b }
 function max(a,b) { return a > b ? a : b }
 function push(_array, _val) { _array[length(_array) + 1] = _val}
 
-function closest(array, min, i) {
+function closest(starts_stack, lasts_stack, min, i) {
     min = 1.0e18 # something bigger than any of the ids
-    for (i in array) { if (array[i] < min) { min = array[i] }}
+    for (k in starts_stack) {
+        if (starts_stack[k] != 0 && lasts_stack[k] != 0) {
+            min = min_of(starts_stack[k], min)
+        }
+    }
     return min
 }
 
@@ -37,7 +41,6 @@ function push_ranges_from_all_ranges_one_map(_out_starts_stack, _out_lasts_stack
             # printf "   |   |   |mapped %d-%d k:%d\n", _in_starts_stack[key], _in_lasts_stack[key], key
             _in_starts_stack[key] = 0
             _in_lasts_stack[key] = 0
-            # BUG but we do need to add the left and right parts (if they exist) to the input ranges for future sub maps of this map
         }
     }
 }
@@ -49,6 +52,9 @@ function push_ranges_from_one_range_one_map(_out_starts_stack, _out_lasts_stack,
     # only 1 of them is mapped
     # push them on to the _out_ranges array
     mapped = false
+    if (!_in_last) {
+        return # skip empty (already mapped) ranges
+    }
     printf "   |   |%d-%d maps to:\n", _in_start, _in_last
     if (_in_start < _map_in_start) {
         # push the range before the mapped range
@@ -147,9 +153,18 @@ BEGIN {
 }
 
 END {
-    printf "\nout_starts:"
-    # log value of each key
+    printf "\nout_starts before fix:"
     for (key in out_starts_stack) { printf " %d", out_starts_stack[key] }
+
+    for (k in next_starts_stack) {
+        push(out_starts_stack, next_starts_stack[k])
+        push(out_lasts_stack, next_lasts_stack[k])
+    }
+    delete next_starts_stack; delete next_lasts_stack
+
+    printf "\nout_starts with next_starts:"
+    for (key in out_starts_stack) { printf " %d", out_starts_stack[key] }
+
     printf "\n\n    Sample has closest location of 46.\n"
-    print "Closest location is " closest(out_starts_stack) "."
+    print "Closest location is " closest(out_starts_stack, out_lasts_stack) "."
 }
