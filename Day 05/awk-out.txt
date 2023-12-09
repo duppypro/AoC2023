@@ -1,42 +1,133 @@
-seeds: 3 10 20 6
-    3-12 20-25
-ranges:  3-12 20-25
+seeds: 79 14 55 13
+ranges: 79-92 55-67
 seed-to-soil map:
-    1-9 -> 101-109
-        3-12 maps to map:103-9 right:10-12
-        20-25 maps to right:20-25
-    23-28 -> 203-208
-        20-25 maps to left:20-22 map:200-205
-    39-49 -> 309-319
-    40-81 -> 500-541
-ranges:  X3-12X X20-25X 103-9 10-12 20-25 20-22 200-205
+    98-99 -> 50-51
+   |   |79-92 maps to:
+   |   |   |left:79-92
+   |   |55-67 maps to:
+   |   |   |left:55-67
+    50-97 -> 52-99
+   |   |79-92 maps to:
+   |   |---|MAP:81-94
+   |   |55-67 maps to:
+   |   |---|MAP:57-69
+ranges:
 soil-to-fertilizer map:
-    30-31 -> 9930-9931
-        103-9 maps to right:103-9
-        10-12 maps to left:10-12
-        20-25 maps to left:20-25
-        20-22 maps to left:20-22
-        200-205 maps to right:200-205
-ranges:  X3-12X X20-25X 103-9 10-12 20-25 20-22 200-205 103-9 200-205
+    15-51 -> 0-36
+   |   |81-94 maps to:
+   |   |   |right:81-94
+   |   |57-69 maps to:
+   |   |   |right:57-69
+    52-53 -> 37-38
+   |   |81-94 maps to:
+   |   |   |right:81-94
+   |   |57-69 maps to:
+   |   |   |right:57-69
+    0-14 -> 39-53
+   |   |81-94 maps to:
+   |   |   |right:81-94
+   |   |57-69 maps to:
+   |   |   |right:57-69
+ranges: 81-94 57-69
+fertilizer-to-water map:
+    53-60 -> 49-56
+   |   |81-94 maps to:
+   |   |   |right:81-94
+   |   |57-69 maps to:
+   |   |---|MAP:53-60
+   |   |   |right:61-69
+    11-52 -> 0-41
+   |   |81-94 maps to:
+   |   |   |right:81-94
+   |   |61-69 maps to:
+   |   |   |right:61-69
+    0-6 -> 42-48
+   |   |81-94 maps to:
+   |   |   |right:81-94
+   |   |61-69 maps to:
+   |   |   |right:61-69
+    7-10 -> 57-60
+   |   |81-94 maps to:
+   |   |   |right:81-94
+   |   |61-69 maps to:
+   |   |   |right:61-69
+ranges: 81-94 61-69
+water-to-light map:
+    18-24 -> 88-94
+   |   |81-94 maps to:
+   |   |   |right:81-94
+   |   |61-69 maps to:
+   |   |   |right:61-69
+   |   |53-60 maps to:
+   |   |   |right:53-60
+    25-94 -> 18-87
+   |   |81-94 maps to:
+   |   |---|MAP:74-87
+   |   |61-69 maps to:
+   |   |---|MAP:54-62
+   |   |53-60 maps to:
+   |   |---|MAP:46-53
+ranges:
+light-to-temperature map:
+    77-99 -> 45-67
+   |   |74-87 maps to:
+   |   |   |left:74-76
+   |   |---|MAP:45-55
+   |   |54-62 maps to:
+   |   |   |left:54-62
+   |   |46-53 maps to:
+   |   |   |left:46-53
+    45-63 -> 81-99
+   |   |74-76 maps to:
+   |   |   |right:74-76
+   |   |54-62 maps to:
+   |   |---|MAP:90-98
+   |   |46-53 maps to:
+   |   |---|MAP:82-89
+    64-76 -> 68-80
+   |   |74-76 maps to:
+   |   |---|MAP:78-80
+ranges:
+temperature-to-humidity map:
+    69-69 -> 0-0
+   |   |45-55 maps to:
+   |   |   |left:45-55
+   |   |90-98 maps to:
+   |   |   |right:90-98
+   |   |82-89 maps to:
+   |   |   |right:82-89
+   |   |78-80 maps to:
+   |   |   |right:78-80
+    0-68 -> 1-69
+   |   |45-55 maps to:
+   |   |---|MAP:46-56
+   |   |90-98 maps to:
+   |   |   |right:90-98
+   |   |82-89 maps to:
+   |   |   |right:82-89
+   |   |78-80 maps to:
+   |   |   |right:78-80
+ranges: 90-98 82-89 78-80
 humidity-to-location map:
-    4103-4121 -> 20103-20121
-        103-9 maps to left:103-9
-        10-12 maps to left:10-12
-        20-25 maps to left:20-25
-        20-22 maps to left:20-22
-        200-205 maps to left:200-205
-        103-9 maps to left:103-9
-        200-205 maps to left:200-205
-    312-330 -> 690312-690330
-        103-9 maps to left:103-9
-        10-12 maps to left:10-12
-        20-25 maps to left:20-25
-        20-22 maps to left:20-22
-        200-205 maps to left:200-205
-        103-9 maps to left:103-9
-        200-205 maps to left:200-205
+    56-92 -> 60-96
+   |   |90-98 maps to:
+   |   |---|MAP:94-92
+   |   |   |right:93-98
+   |   |82-89 maps to:
+   |   |---|MAP:86-93
+   |   |78-80 maps to:
+   |   |---|MAP:82-84
+   |   |46-56 maps to:
+   |   |   |left:46-55
+   |   |---|MAP:60-60
+    93-96 -> 56-59
+   |   |93-98 maps to:
+   |   |---|MAP:56-96
+   |   |   |right:97-98
+   |   |46-55 maps to:
+   |   |   |left:46-55
 
- out_starts: 3 20 103 10 20 20 200 103 200
+out_starts: 97 46
 
     Sample has closest location of 46.
-Closest location is 3.
+Closest location is 46.
