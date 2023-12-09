@@ -1,16 +1,42 @@
-seeds: 3 2 10 1 20 6 30 9
-    3-4 10-10 20-25 30-38
+seeds: 3 10 20 6
+    3-12 20-25
+ranges:  3-12 20-25
+seed-to-soil map:
+    1-9 -> 101-109
+        3-12 maps to map:103-9 right:10-12
+        20-25 maps to right:20-25
+    23-28 -> 203-208
+        20-25 maps to left:20-22 map:200-205
+    39-49 -> 309-319
+    40-81 -> 500-541
+ranges:  X3-12X X20-25X 103-9 10-12 20-25 20-22 200-205
+soil-to-fertilizer map:
+    30-31 -> 9930-9931
+        103-9 maps to right:103-9
+        10-12 maps to left:10-12
+        20-25 maps to left:20-25
+        20-22 maps to left:20-22
+        200-205 maps to right:200-205
+ranges:  X3-12X X20-25X 103-9 10-12 20-25 20-22 200-205 103-9 200-205
+humidity-to-location map:
+    4103-4121 -> 20103-20121
+        103-9 maps to left:103-9
+        10-12 maps to left:10-12
+        20-25 maps to left:20-25
+        20-22 maps to left:20-22
+        200-205 maps to left:200-205
+        103-9 maps to left:103-9
+        200-205 maps to left:200-205
+    312-330 -> 690312-690330
+        103-9 maps to left:103-9
+        10-12 maps to left:10-12
+        20-25 maps to left:20-25
+        20-22 maps to left:20-22
+        200-205 maps to left:200-205
+        103-9 maps to left:103-9
+        200-205 maps to left:200-205
 
-
-apply map: seed-to-soil
-
-
-apply map: soil-to-fertilizer
-
-
-apply map: humidity-to-location
-
- out_starts:
+ out_starts: 3 20 103 10 20 20 200 103 200
 
     Sample has closest location of 46.
-Closest location is 1000000000000000000.
+Closest location is 3.

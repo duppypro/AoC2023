@@ -27,96 +27,111 @@ function closest(array, min, i) {
     return min
 }
 
-function push_ranges_from_all_ranges_all_maps(_out_starts, _out_lasts, _in_starts, _in_lasts, _map_out_starts, _map_in_starts, _map_in_lasts) {
-    # for each range in _in_ranges
-    #   for each map in _map_ranges
-    #       push_ranges_from_one_range_one_map(_out_starts, _out_lasts, _in_start, _in_last, _map_out_start, _map_in_start, _map_in_last)
-    #   end for
-    # end for
-    for (i_range in _in_starts) {
-        for (i_map in _map_in_starts) {
-            push_ranges_from_one_range_one_map(_out_starts, _out_lasts, _in_starts[i_range], _in_lasts[i_range], _map_out_starts[i_map], _map_in_starts[i_map], _map_in_lasts[i_map])
+function push_ranges_from_all_ranges_one_map(_out_starts, _out_lasts,_in_starts, _in_lasts,_map_out_start, _map_in_start, _map_in_last)
+{
+    for (key in _in_starts) {
+        if (!already_mapped[key]) {
+            push_ranges_from_one_range_one_map(key, _out_starts, _out_lasts, _in_starts[key], _in_lasts[key], _map_out_start, _map_in_start, _map_in_last)
         }
     }
 }
 
 # start and last are inclusive
-function push_ranges_from_one_range_one_map(_out_starts, _out_lasts, _in_start, _in_last, _map_out_start, _map_in_start, _map_in_last) {
+function push_ranges_from_one_range_one_map(key, _out_starts, _out_lasts, _in_start, _in_last, _map_out_start, _map_in_start, _map_in_last)
+{
     # maximum 3 possible output ranges,
     # only 1 of them is mapped
     # push them on to the _out_ranges array
+    printf "        %d-%d maps to", _in_start, _in_last
+    og_in_start = _in_start
     if (_in_start < _map_in_start) {
         # push the range before the mapped range
-        push(_out_starts, _in_start)
+        printf " left:%d-", _in_start
         if (_in_last < _map_in_start) {
-            push(_out_lasts, _in_last)
+            printf "%d\n", _in_last
             return
         }
+        push(_out_starts, _in_start)
         push(_out_lasts, _map_in_start - 1)
+        printf "%d", _map_in_start - 1
         # start a new range, this part will be mapped
         _in_start = _map_in_start
     }
 
     if (_in_start <= _map_in_last) {
-        push(   _out_starts, _map_out_start - _map_in_start + _in_start)
+        push(   _out_starts, _map_out_start - _map_in_start + og_in_start)
+        printf " map:%d-", _map_out_start - _map_in_start + og_in_start
+        already_mapped[key] = 1 # don't map this range again
         if (_in_last <= _map_in_last) {
             push(_out_lasts, _map_out_start - _map_in_start + _in_last)
+            printf "%d\n", _map_out_start - _map_in_start + _in_last
             return
         }
         push(_out_lasts, _map_in_last)
+        printf "%d", _map_in_last
         _in_start = _map_in_last + 1
     }
     push(_out_starts, _in_start)
     push(_out_lasts, _in_last)
+    printf " right:%d-", _in_start
+    printf "%d\n", _in_last
 }
 
 BEGIN {
-    true = 1; false = 0
-    delete location_yet # this makes it an array
-    # so that length(location_yet) won't complain about a scalar the first time through
-    delete map_names # likewise
-    delete out_starts
-    delete out_lasts
-    delete in_starts
-    delete in_lasts
 }
 
-{sub(/\r$/, "", $NF)} # fix Windows line endings
+{sub(/\r$/, "", $NF)} # fix Windows line endings for every line
+# if we don't do this then the line "name map:\r\n" on Windows
+# $NF will be "map:\r" and not match /map:$/
+# and we cant fix by using /map:\r$/ because the \r isn't there on unix and Mac
+# could fix by always doing /map:[\r]{0,1}$/ but we won't remember always
+# and we might be matching on something that doesn't have to be last
+# and its hard for new readers to pick up
 
 /^seeds:/ {
     print $0
     printf "   "
     split($0, seed_ranges, " "); delete seed_ranges[1]
+    delete out_starts; delete out_lasts
     range_num = 2
     while (range_num <= length(seed_ranges)) {
         start = seed_ranges[range_num]
         last = start + seed_ranges[range_num + 1] - 1
-        push(in_starts, start); push(in_lasts, last)
+        push(out_starts, start); push(out_lasts, last)
         printf " %d-%d", start, last
         range_num += 2
     }
+    delete already_mapped
     printf "\n"
 }
 
-/map:$/ {
-    for (seed_num in location_yet) { printf " %d from %d", location_yet[seed_num], seed_num }
-    printf "\n\n"
-    print "apply map: " $1
-    delete map_applied
+/map:$/ { # starts a new map consisting of multiple ranges
+    printf "ranges: "
+    for (k in out_starts) {
+        skip = already_mapped[k] ? "X" : ""
+        printf " %s%d-%d%s", skip, out_starts[k], out_lasts[k], skip
+        in_starts[k] = out_starts[k]
+        in_lasts[k]  = out_lasts[k]
+    }
+    # delete out_starts; delete out_lasts
+    # the previous mapped output is now input
+    # awk can't re-point arrays as in: in_starts = out_starts; in_lasts = out_lasts
+    printf "\n" $0 "\n"
 }
 
-/^[0-9]+ [0-9]+ [0-9]+$/ {
+/^[0-9]+ [0-9]+ [0-9]+$/ { # one range per line in a map
     # $1 dest start
     # $2 source start
     # $3 is range length
-    for (seed_num in location_yet) {
-        if (!map_applied[seed_num]) {
-            if (location_yet[seed_num] >= $2 && location_yet[seed_num] < $2 + $3) {
-                location_yet[seed_num] = $1 + location_yet[seed_num] - $2
-                map_applied[seed_num] = true
-            }
-        }
-    }
+    map_dest_start = $1
+    map_src_start = $2
+    map_src_count = $3
+    map_src_last = map_src_start + map_src_count - 1
+    map_dest_last = map_dest_start + map_src_count - 1
+
+    printf "    %d-%d -> %d-%d\n", map_src_start, map_src_last, map_dest_start, map_dest_last
+
+    push_ranges_from_all_ranges_one_map(out_starts, out_lasts, in_starts, in_lasts, map_dest_start, map_src_start, map_src_last)
 }
 
 END {
