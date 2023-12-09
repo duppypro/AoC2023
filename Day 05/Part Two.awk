@@ -24,7 +24,7 @@ function push(_array, _val) { _array[length(_array) + 1] = _val}
 function closest(starts_stack, lasts_stack, min, i) {
     min = 1.0e18 # something bigger than any of the ids
     for (k in starts_stack) {
-        if (starts_stack[k] != 0 && lasts_stack[k] != 0) {
+        if (lasts_stack[k] != 0) {
             min = min_of(starts_stack[k], min)
         }
     }
