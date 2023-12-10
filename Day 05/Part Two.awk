@@ -21,12 +21,10 @@ function min_of(a,b) { return a < b ? a : b }
 function max(a,b) { return a > b ? a : b }
 function push(_array, _val) { _array[length(_array) + 1] = _val}
 
-function closest(starts_stack, lasts_stack, min, i) {
+function closest(starts_stack, min, i) {
     min = 1.0e18 # something bigger than any of the ids
     for (k in starts_stack) {
-        if (lasts_stack[k] != 0) {
-            min = min_of(starts_stack[k], min)
-        }
+        min = min_of(starts_stack[k], min)
     }
     return min
 }
@@ -35,13 +33,7 @@ function push_ranges_from_all_ranges_one_map(_out_starts_stack, _out_lasts_stack
 {
     for (key in _in_starts_stack) {
         push_ranges_from_one_range_one_map(_out_starts_stack, _out_lasts_stack, _in_starts_stack[key], _in_lasts_stack[key], _map_out_start, _map_in_start, _map_in_last)
-        if (mapped) { # don't run this full range through future maps
-            # don't use delete because we need to keep the key so 
-            # that the _in_foo[] acts like a stack not array and push() works
-            # printf "   |   |   |mapped %d-%d k:%d\n", _in_starts_stack[key], _in_lasts_stack[key], key
-            _in_starts_stack[key] = 0
-            _in_lasts_stack[key] = 0
-        }
+# print "key:" key " last:" _in_lasts_stack[key]
     }
 }
 
@@ -51,46 +43,51 @@ function push_ranges_from_one_range_one_map(_out_starts_stack, _out_lasts_stack,
     # maximum 3 possible output ranges,
     # only 1 of them is mapped
     # push them on to the _out_ranges array
-    mapped = false
-    if (!_in_last) {
-        return # skip empty (already mapped) ranges
-    }
-    printf "   |   |%d-%d maps to:\n", _in_start, _in_last
+    printf "        %d-%d maps to:", _in_start, _in_last
     if (_in_start < _map_in_start) {
         # push the range before the mapped range
         if (_in_last < _map_in_start) {
             push(_out_starts_stack, _in_start)
             push(_out_lasts_stack, _in_last)
-            printf "   |   |   |left:%d-%d\n", _in_start, _in_last
-            return mapped
+            printf " ident:%d-%d ----------- -----------", _in_start, _in_last
+            printf "\n"; return
         }
         push(_out_starts_stack, _in_start)
         push(_out_lasts_stack, _map_in_start - 1)
-        printf "   |   |   |left:%d-%d\n", _in_start, _map_in_start - 1
+        printf " left :%d-%d", _in_start, _map_in_start - 1
         # start a new range, this part will be mapped
         _in_start = _map_in_start
+    } else {
+        printf " -----------"
     }
+
     if (_in_start <= _map_in_last) {
         if (_in_last <= _map_in_last) {
             push(next_starts_stack, _map_out_start - _map_in_start + _in_start)
             push(next_lasts_stack,  _map_out_start - _map_in_start + _in_last )
-            mapped = true
-            printf "   |   |---|MAP:%d-%d\n", _map_out_start - _map_in_start + _in_start, _map_out_start - _map_in_start + _in_last
-            return mapped
+            printf " [MAP]:%d-%d", _map_out_start - _map_in_start + _in_start, _map_out_start - _map_in_start + _in_last
+            printf " -----------\n"
+            return
         }
         push(next_starts_stack, _map_out_start - _map_in_start + _in_start)
-        push(next_lasts_stack, _map_in_last)
-        mapped = true
-        printf "   |   |---|MAP:%d-%d\n", _map_out_start - _map_in_start + _in_start, _map_in_last
-        _in_start = _map_in_last + 1
+        push(next_lasts_stack, _map_out_start - _map_in_start + _map_in_last)
+        printf " [MAP]:%d-%d,", _map_out_start - _map_in_start + _in_start, _map_out_start - _map_in_start + _map_in_last
+        push(_out_starts_stack, _map_in_last + 1)
+        push(_out_lasts_stack, _in_last)
+        printf " right:%d-%d", _map_in_last + 1, _in_last
+        printf "\n"
+        return
+    } else {
+        push(_out_starts_stack, _in_start)
+        push(_out_lasts_stack, _in_last)
+        printf "----------- ident:%d-%d", _in_start, _in_last
+        printf "\n"; return
     }
-    push(_out_starts_stack, _in_start)
-    push(_out_lasts_stack, _in_last)
-    printf "   |   |   |right:%d-%d\n", _in_start, _in_last
-    return mapped
+
 }
 
 BEGIN {
+    true = 1; false = 0
 }
 
 {sub(/\r$/, "", $NF)} # fix Windows line endings for every line
@@ -121,13 +118,14 @@ BEGIN {
     for (k in out_starts_stack) {
         printf " %d-%d", out_starts_stack[k], out_lasts_stack[k]
     }
-    print "\n" $0
+    printf " NEW:"
     for (k in next_starts_stack) {
+        printf " %d-%d", next_starts_stack[k], next_lasts_stack[k]
         push(out_starts_stack, next_starts_stack[k])
         push(out_lasts_stack, next_lasts_stack[k])
     }
+    print "\n" $0
     delete next_starts_stack; delete next_lasts_stack
-
 }
 
 /^[0-9]+ [0-9]+ [0-9]+$/ { # one range per line in a map
@@ -153,18 +151,18 @@ BEGIN {
 }
 
 END {
-    printf "\nout_starts before fix:"
-    for (key in out_starts_stack) { printf " %d", out_starts_stack[key] }
-
-    for (k in next_starts_stack) {
-        push(out_starts_stack, next_starts_stack[k])
-        push(out_lasts_stack, next_lasts_stack[k])
+    printf "--- FINAL ---\nranges:"
+    # the previous mapped output is now input
+    # awk can't re-point arrays as in: in_starts = out_starts; in_lasts = out_lasts
+    for (k in out_starts_stack) {
+        printf " %d", out_starts_stack[k]
     }
-    delete next_starts_stack; delete next_lasts_stack
-
-    printf "\nout_starts with next_starts:"
-    for (key in out_starts_stack) { printf " %d", out_starts_stack[key] }
+    printf " NEW:"
+    for (k in next_starts_stack) {
+        printf " %d", next_starts_stack[k]
+        push(out_starts_stack, next_starts_stack[k])
+    }
 
     printf "\n\n    Sample has closest location of 46.\n"
-    print "Closest location is " closest(out_starts_stack, out_lasts_stack) "."
+    print "Closest location is " closest(out_starts_stack) "."
 }
