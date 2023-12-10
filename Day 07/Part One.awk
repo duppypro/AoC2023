@@ -50,13 +50,82 @@
 
 # Find the rank of every hand in your set. What are the total winnings?
 
-function rank_of(hand) {
-    
+function value_by_hand(hand, key, i, v, values, _cards, _counts) {
+    # Every hand is exactly one type. From strongest to weakest, they are:
 
-}
+    # Five of a kind, where all five cards have the same label: AAAAA
+    # Four of a kind, where four cards have the same label and one card has a different label: AA8AA
+    # Full house, where three cards have the same label, and the remaining two cards share a different label: 23332
+    # Three of a kind, where three cards have the same label, and the remaining two cards are each different from any other card in the hand: TTT98
+    # Two pair, where two cards share one label, two other cards share a second label, and the remaining card has a third label: 23432
+    # One pair, where two cards share one label, and the other three cards have a different label from the pair and each other: A23A4
+    # High card, where all cards' labels are distinct: 23456
+    # Hands are primarily ordered based on type; for example, every full house is stronger than any three of a kind.
+
+    # If two hands have the same type, a second ordering rule takes effect. Start by comparing the first card in each hand. If these cards are different, the hand with the stronger first card is considered stronger. If the first card in each hand have the same label, however, then move on to considering the second card in each hand. If they differ, the hand with the higher second card wins; otherwise, continue with the third card in each hand, then the fourth, then the fifth.    
+
+    # count the number of each card in the hand
+    delete _counts
+    l = length(hand)
+    for (key = 1; key <= l; key++) {
+        value = substr(hand, key, 1)
+        _counts[value]++
+    }
+    
+    maybe_full_house = false
+    maybe_two_pair = false
+    lone_cards = 0
+    for (key in _counts) {
+        if (_counts[key] == 5) {
+            return 70 # Five of a kind
+        }
+        if (_counts[key] == 4) {
+            return 60 # Four of a kind
+        }
+        if (_counts[key] == 3) {
+            if (maybe_two_pair) {
+                return 50 # Full house
+            }
+            maybe_full_house = true
+        }
+        if (_counts[key] == 2) {
+            if (maybe_full_house) {
+                return 50 # Full house
+            }
+            if (maybe_two_pair) {
+                return 30 # Two pair
+            }
+            maybe_two_pair = true
+        }
+        if (_counts[key] == 1) {
+            lone_cards++
+        }
+    }
+    if (maybe_full_house) {
+        return 40 # Three of a kind
+    }
+    if (maybe_two_pair) {
+        return 20 # One pair
+    }
+    if (lone_cards == 5) {
+        return 10 # High card
+    }
+    return -1 # error
+} # end value_by_hand()
 
 BEGIN {
     true = 1; false = 0
+
+    split("1 2 3 4 5 6 7 8 9 T J Q K A", values, " ")
+    # we never use the '1' it's there to make the face values 2 match 2, 3 match 3, etc
+    delete value_of_cards
+    for (key in values) {
+        value_of_cards[values[key]] = key
+    }
+    # for (key in value_of_cards) {
+    #     printf "value_of_cards[%s] = %s\n", key, value_of_cards[key]
+    # }
+
 }
 
 {sub(/\r$/, "", $NF)} # fix Windows line endings for every line
@@ -68,12 +137,41 @@ BEGIN {
 # and its hard for new readers to pick up
 
 /^[^ ]{5,5} [0-9]+$/ {
-    print $0
+    hands[++p] = $1
+    bids[p] = $2
+}
+
+function push(stack, v) {
+    stack[++stack[0]] = v
+}
+
+function insert_by_rank_sorted(hand_stack, bid_stack, v, bid, hand) {
+    push(hand_stack, hand)
+    push(bid_stack, bid)
 }
 
 
 END {
+    print "HANDS BIDS"
+    delete hand_by_rank
+    delete bid_by_rank
+    for (key in hands) {
+        hand = hands[key]
+        bid = bids[key]
+        v = value_by_hand(hand)
+        insert_by_rank_sorted(hand_by_rank, bid_by_rank, v, bid, hand)
+        print hand, bid, "hand value", v
+    }
+    printf "\n-----\n\n"
+
+    l = length(hand_by_rank)
+    print "LENGTH(hand_by_rank) = " l
+    for (i = 1; i < l; i++) {
+        print "hand_by_rank[" i "] = " hand_by_rank[i] " bid = " bid_by_rank[i]
+    }
 
     printf "\n"
-    printf "Total winnings are %d.\n", total_winnings
+    print "So the total winnings in sample.txt are 6440."
+    print " (765 * 1 + 220 * 2 + 28 * 3 + 684 * 4 + 483 * 5)"
+    printf "\nTotal winnings are %d.\n", total_winnings
 }

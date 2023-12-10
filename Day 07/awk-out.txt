@@ -1,7 +1,20 @@
-32T3K 765
-T55J5 684
-KK677 28
-KTJJT 220
-QQQJA 483
+HANDS BIDS
+32T3K 765 hand value 20
+T55J5 684 hand value 40
+KK677 28 hand value 30
+KTJJT 220 hand value 30
+QQQJA 483 hand value 40
+
+-----
+
+LENGTH(hand_by_rank) = 6
+hand_by_rank[1] = 32T3K bid = 765
+hand_by_rank[2] = T55J5 bid = 684
+hand_by_rank[3] = KK677 bid = 28
+hand_by_rank[4] = KTJJT bid = 220
+hand_by_rank[5] = QQQJA bid = 483
+
+So the total winnings in sample.txt are 6440.
+ (765 * 1 + 220 * 2 + 28 * 3 + 684 * 4 + 483 * 5)
 
 Total winnings are 0.
