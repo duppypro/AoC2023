@@ -145,8 +145,21 @@ function push(stack, v) {
     stack[++stack[0]] = v
 }
 
-function insert_by_rank_sorted(hand_stack, bid_stack, v, bid, hand) {
-    push(hand_stack, hand)
+function insert_by_rank_sorted(hand_stack, bid_stack, v, bid, hand, i, j) {
+    for (i = 1; i <= hand_stack[0]; i++) {
+        if (v <= hand_stack[i]) { # lowest value is rank 1
+            # insert here
+            for (j = hand_stack[0]; j >= i; j--) {
+                hand_stack[j + 1] = hand_stack[j]
+                bid_stack[j + 1] = bid_stack[j]
+            }
+            hand_stack[i] = v
+            bid_stack[i] = bid
+            hand_stack[0]++ # increment length of stack
+            return
+        }
+    }
+    push(hand_stack, v)
     push(bid_stack, bid)
 }
 
@@ -164,9 +177,10 @@ END {
     }
     printf "\n-----\n\n"
 
-    l = length(hand_by_rank)
+    total_winnings = 0
+    len = hand_by_rank[0] # using an array as a stack where a[0] = len and a[1]..a[len] are the stack
     print "LENGTH(hand_by_rank) = " l
-    for (i = 1; i < l; i++) {
+    for (i = 1; i <= len; i++) {
         print "hand_by_rank[" i "] = " hand_by_rank[i] " bid = " bid_by_rank[i]
     }
 
