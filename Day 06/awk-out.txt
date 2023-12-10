@@ -1,0 +1,7 @@
+Duration: 7 15 30
+Record: 9 40 200
+roots of race 2 are 1.697224 and 5.302776 => 4 wins  (3.605551)
+roots of race 3 are 3.468871 and 11.531129 => 8 wins  (8.062258)
+roots of race 4 are 10.000000 and 20.000000 => 9 wins  (10.000000)
+
+Answer is 288

@@ -40,3 +40,60 @@
 
 # Determine the number of ways you could beat the record in each race. What do you get if you multiply these numbers together?
 
+BEGIN {
+    true = 1; false = 0
+}
+
+{sub(/\r$/, "", $NF)} # fix Windows line endings for every line
+# if we don't do this then the line "name map:\r\n" on Windows
+# $NF will be "map:\r" and not match /map:$/
+# and we cant fix by using /map:\r$/ because the \r isn't there on unix and Mac
+# could fix by always doing /map:[\r]{0,1}$/ but we won't remember always
+# and we might be matching on something that doesn't have to be last
+# and its hard for new readers to pick up
+
+/^Time:/ {
+    printf "Duration:"
+    f = 1
+    while (++f <= NF) {
+        durations[f] = $f
+        printf(" %s", $f)
+    }
+    printf("\n")
+}
+
+/^Distance:/ {
+    printf "Record:"
+    f = 1
+    while (++f <= NF) {
+        records[f] = $f
+        printf(" %s", $f)
+    }
+    printf("\n")
+}
+
+
+END {
+    # in sample.txt multiply these values together, you get 288 == (4 * 8 * 9)
+    wins_multiplied = 1
+    for (k in durations) {
+        # the distance traveled is the time pressed times the time left
+        # so it is distance = time_pressed * (duration - time_pressed)
+        # we want the integer time_pressed values that are strictly greater than the record
+        # re-factor to distance = time_pressed * (duration - time_pressed) - record
+        # then the integer time_pressed values that are strictly greater than 0
+        # are all the integers between the roots of the quadratic equation, inclusive
+        # so we need to find the roots of the quadratic equation
+        # using conventional names for the quadratic equation
+        # a = -1, b = duration, c = -record
+        a = -1; b = durations[k]; c = -records[k]
+        discriminant = sqrt(b * b - 4 * a * c)
+        root1 = (-b + discriminant) / (2 * a)
+        root2 = (-b - discriminant) / (2 * a)
+        wins = int(root2-1e-9) - int(root1+1e-9)
+        printf "roots of race %d are %f and %f => %d wins  (%f)\n", k, root1, root2, wins, discriminant
+        wins_multiplied *= wins
+    }
+    printf "\n"
+    printf "Answer is %d\n", wins_multiplied
+}
