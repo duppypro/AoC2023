@@ -1,7 +1,8 @@
-Duration: 7 15 30
-Record: 9 40 200
-roots of race 2 are 1.697224 and 5.302776 => 4 wins  (3.605551)
-roots of race 3 are 3.468871 and 11.531129 => 8 wins  (8.062258)
-roots of race 4 are 10.000000 and 20.000000 => 9 wins  (10.000000)
+Duration: 41 96 88 94
+Record: 214 1789 1127 1055
+roots of race 2 are 6.138593 and 34.861407 => 28 wins  (28.722813)
+roots of race 3 are 25.306389 and 70.693611 => 45 wins  (45.387223)
+roots of race 4 are 15.557075 and 72.442925 => 57 wins  (56.885851)
+roots of race 5 are 13.029424 and 80.970576 => 67 wins  (67.941151)
 
-Answer is 288
+Answer is 4811940
