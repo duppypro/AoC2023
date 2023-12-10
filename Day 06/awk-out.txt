@@ -1,8 +1,5 @@
-Duration: 41 96 88 94
-Record: 214 1789 1127 1055
-roots of race 2 are 6.138593 and 34.861407 => 28 wins  (28.722813)
-roots of race 3 are 25.306389 and 70.693611 => 45 wins  (45.387223)
-roots of race 4 are 15.557075 and 72.442925 => 57 wins  (56.885851)
-roots of race 5 are 13.029424 and 80.970576 => 67 wins  (67.941151)
+Duration: 41968894
+Record: 214178911271055
+roots: (5945560.584286, 36023333.415714) => 30077773... or 30077773? wins. disc=30077772.831428
 
-Answer is 4811940
+Answer is 30077773.   or maybe 30077773?
