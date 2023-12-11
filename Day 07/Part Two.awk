@@ -72,7 +72,7 @@
 
 # Using the new joker rule, find the rank of every hand in your set. What are the new total winnings?
 
-function value_by_hand(hand, key, i, v, values, _cards, _counts) {
+function value_by_hand(hand, key, i, v, values, _cards, _counts, len) {
     # Every hand is exactly one type. From strongest to weakest, they are:
 
     # Five of a kind, where all five cards have the same label: AAAAA
@@ -88,33 +88,52 @@ function value_by_hand(hand, key, i, v, values, _cards, _counts) {
 
     # count the number of each card in the hand
     delete _counts
-    l = length(hand)
-    for (key = 1; key <= l; key++) {
+    len = length(hand)
+    for (key = 1; key <= len; key++) {
         value = substr(hand, key, 1)
         _counts[value]++
+        # printf "%sx%d ", value, _counts[value]
     }
+    # printf "\n"
     
     maybe_full_house = false
     maybe_two_pair = false
     lone_cards = 0
-    joker_count = _counts["J"]
+    joker_count = _counts["J"] || 0
+    delete _counts["J"]
+    # print "   ", hand, "has", joker_count, "Js"
+    if (joker_count >= 4) {
+        return 70 # Five of a kind
+    }
+    # printf "    "
+    # for (key in _counts) {
+    #     printf " '%s' x %d", key, _counts[key] 
+    # }
+    # printf "\n"
     for (key in _counts) {
-        if (key == "J") {
-            if(joker_count >= 4) {
-                return 70 # Five of a kind
-            }
-            continue
+        # if (key == "J") {
+        #     continue
+        # }
+        num = _counts[key]
+        if (num > 5 || num < 1) {
+            return -1 # error
         }
-        if (_counts[key] == 5) {
+        if (num == 5) {
             return 70 # Five of a kind
         }
-        if (_counts[key] == 4) {
-            if (joker_count) {
+        if (num == 4) {
+            if (joker_count == 1) {
                 return 70 # Five of a kind
             }
-            return 60 # Four of a kind
+            if (joker_count == 0) {
+                return 60 # Four of a kind
+            }
+            return -1 # error
         }
-        if (_counts[key] == 3) {
+        if (num == 3) {
+            if (joker_count >= 3 || joker_count < 0) {
+                return -1 # error
+            }
             if (joker_count == 2) {
                 return 70 # Five of a kind
             }
@@ -126,15 +145,21 @@ function value_by_hand(hand, key, i, v, values, _cards, _counts) {
             }
             maybe_full_house = true
         }
-        if (_counts[key] == 2) {
-            if (maybe_full_house) {
-                return 50 # Full house
-            }
+        if (num == 2) {
             if (maybe_two_pair) {
+                if (maybe_full_house) {
+                    return -1 # error    50 # Full house
+                }
                 if (joker_count == 1) {
                     return 50 # Full house
                 }
+                if (joker_count > 1) {
+                    return -1 # error
+                }
                 return 30 # Two pair
+            }
+            if (maybe_full_house) {
+                return 50 # Full house
             }
             if (joker_count == 3) {
                 return 70 # Five of a kind
@@ -144,15 +169,15 @@ function value_by_hand(hand, key, i, v, values, _cards, _counts) {
             }
             maybe_two_pair = true
         }
-        if (_counts[key] == 1) {
+        if (num == 1) {
             lone_cards++
         }
-    }
+    } # end for (key in _counts)
     if (maybe_full_house) {
-        if (joker_count == 1) {
+        if (joker_count == 2) {
             return 70 # Five of a kind
         }
-        if (joker_count == 2) {
+        if (joker_count == 1) {
             return 60 # Four of a kind
         }
         return 40 # Three of a kind
@@ -165,7 +190,7 @@ function value_by_hand(hand, key, i, v, values, _cards, _counts) {
             return 60 # Four of a kind
         }
         if (joker_count == 1) {
-            return 30 # Two pair
+            return 40 # Three of a kind
         }
         return 20 # One pair
     }
@@ -179,8 +204,13 @@ function value_by_hand(hand, key, i, v, values, _cards, _counts) {
         return 20 # One pair
     }
     if (joker_count == 0) {
-        return 10 # High card
+        if (lone_cards == 5) {
+            return 10 # High card
+        }
+        print "0+5 error"
+        return -1 # error
     }
+    print "final error"
     return -1 # error
 } # end value_by_hand()
 
@@ -205,7 +235,7 @@ BEGIN {
 
 /^[^ ]{5,5} [0-9]+$/ {
     hands[++p] = $1
-    bids[p] = $2
+    bids[p] = +$2
     # print "hand", $1, "bid", $2
 }
 
@@ -288,12 +318,13 @@ END {
     total_winnings = 0
     len = hand_by_rank[0] # using an array as a stack where a[0] = len and a[1]..a[len] are the stack
     printf "Ranked lowest to highest. %d == %d %d %d hands\n", len, length(hand_by_rank), bid_by_rank[0], length(bid_by_rank)
+
     for (i = 1; i <= len; i++) {
-        total_winnings += bid_by_rank[i] * i
+        total_winnings += bid_by_rank[i] * +i
         hand = hand_by_rank[i]
         v = value_by_hand(hand)
         bid = bid_by_rank[i]
-        printf "%d: %d %s %d subtotal = %d, joker_count = %d\n", i, v, hand, bid, total_winnings, joker_count
+        printf "%d: %d %s %d subtotal = %d, has %d jokers.\n", i, v, hand, bid, total_winnings, joker_count
     }
 
     printf "\n"
