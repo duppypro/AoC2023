@@ -120,8 +120,7 @@ BEGIN {
     # we never use the '1' it's there to make the face values 2 match 2, 3 match 3, etc
     delete value_of_cards
     for (key in values) {
-        value_of_cards[values[key]] = +key
-        print "value_of_cards[" values[key] "] = " key
+        value_of_cards[values[key]] = +key # remember the '+' for an int!!!!!!!!
     }
 }
 
@@ -148,7 +147,6 @@ function break_tie(h1, h2, i, v1, v2, len) {
     for (i = 1; i <= len; i++) {
         v1 = value_of_cards[substr(h1, i, 1)]
         v2 = value_of_cards[substr(h2, i, 1)]
-        print "comparing tie", i, substr(h1, i, 1), v1, substr(h2, i, 1), v2
         if (v1 > v2) {
             return +1
             }
@@ -174,7 +172,6 @@ function insert_by_rank_sorted(hand_stack, bid_stack, hand, bid, v, i, j, len) {
             bid_stack[i] = bid
             hand_stack[0]++ # increment length of stack
             bid_stack[0]++ # increment length of stack
-            print "inserted", hand, bid, "at", i, "value:", v, "?<?", value_by_hand(hand_stack[i + 1]), hand_stack[i + 1]
             if (v < value_by_hand(hand_stack[i + 1])) return
             # they have the same value, break the tie
             # first attempt assumed there was only one tie
@@ -182,13 +179,10 @@ function insert_by_rank_sorted(hand_stack, bid_stack, hand, bid, v, i, j, len) {
             # by then it should be inserted correctly
             # forgot to also stop when value changes: Fixed
             for (j = i; j <= len; j++) {
-                print "comparing at", j, hand_stack[j], hand_stack[j + 1]
                 if (value_by_hand(hand_stack[j+1]) > v) {
-                    print "end of this type found", hand_stack[j], ">", v, value_by_hand(hand_stack[j+1])
                     return
                 }
                 _which_bigger = break_tie(hand_stack[j], hand_stack[j + 1])
-                print "    WHICH BIGGER", _which_bigger
                 if (_which_bigger == 1) {
                     # the next hand is smaller, so swap
                     temp = hand_stack[j + 1]
