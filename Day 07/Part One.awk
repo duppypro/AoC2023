@@ -120,7 +120,8 @@ BEGIN {
     # we never use the '1' it's there to make the face values 2 match 2, 3 match 3, etc
     delete value_of_cards
     for (key in values) {
-        value_of_cards[values[key]] = key
+        value_of_cards[values[key]] = +key
+        print "value_of_cards[" values[key] "] = " key
     }
 }
 
@@ -147,6 +148,7 @@ function break_tie(h1, h2, i, v1, v2, len) {
     for (i = 1; i <= len; i++) {
         v1 = value_of_cards[substr(h1, i, 1)]
         v2 = value_of_cards[substr(h2, i, 1)]
+        print "comparing tie", i, substr(h1, i, 1), v1, substr(h2, i, 1), v2
         if (v1 > v2) {
             return +1
             }
@@ -186,6 +188,7 @@ function insert_by_rank_sorted(hand_stack, bid_stack, hand, bid, v, i, j, len) {
                     return
                 }
                 _which_bigger = break_tie(hand_stack[j], hand_stack[j + 1])
+                print "    WHICH BIGGER", _which_bigger
                 if (_which_bigger == 1) {
                     # the next hand is smaller, so swap
                     temp = hand_stack[j + 1]
