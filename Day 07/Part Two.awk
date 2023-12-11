@@ -165,11 +165,20 @@ function value_by_hand(hand, key, i, v, values, _cards, _counts) {
             return 60 # Four of a kind
         }
         if (joker_count == 1) {
-            return 50 # Full house
+            return 30 # Two pair
         }
         return 20 # One pair
     }
-    if (lone_cards == 5) {
+    if (joker_count == 3) {
+        return 60 # Four of a kind
+    }
+    if (joker_count == 2) {
+        return 40 # Three of a kind
+    }
+    if (joker_count == 1) {
+        return 20 # One pair
+    }
+    if (joker_count == 0) {
         return 10 # High card
     }
     return -1 # error
@@ -278,13 +287,13 @@ END {
 
     total_winnings = 0
     len = hand_by_rank[0] # using an array as a stack where a[0] = len and a[1]..a[len] are the stack
-    printf "Ranked lowest to highest. %d hands\n", len
+    printf "Ranked lowest to highest. %d == %d %d %d hands\n", len, length(hand_by_rank), bid_by_rank[0], length(bid_by_rank)
     for (i = 1; i <= len; i++) {
         total_winnings += bid_by_rank[i] * i
         hand = hand_by_rank[i]
         v = value_by_hand(hand)
         bid = bid_by_rank[i]
-        printf "%d: %d %s %d subtotal = %d\n", i, v, hand, bid, total_winnings
+        printf "%d: %d %s %d subtotal = %d, joker_count = %d\n", i, v, hand, bid, total_winnings, joker_count
     }
 
     printf "\n"
