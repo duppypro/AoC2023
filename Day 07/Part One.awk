@@ -135,6 +135,7 @@ BEGIN {
 /^[^ ]{5,5} [0-9]+$/ {
     hands[++p] = $1
     bids[p] = $2
+    # print "hand", $1, "bid", $2
 }
 
 function push(stack, v) {
@@ -157,12 +158,13 @@ function break_tie(h1, h2, i, v1, v2, len) {
     return 0 # all positions were equal
 }
 
-function insert_by_rank_sorted(hand_stack, bid_stack, hand, bid, v, i, j) {
+function insert_by_rank_sorted(hand_stack, bid_stack, hand, bid, v, i, j, len) {
     v = value_by_hand(hand)
-    for (i = 1; i <= hand_stack[0]; i++) {
-        if (v <= value_by_hand(hand_stack[i])) { # lowest value is rank 1
+    len = hand_stack[0]
+    for (i = 1; i <= len; i++) {
+        if (v <= value_by_hand(hand_stack[i])) {
             # insert here
-            for (j = hand_stack[0]; j >= i; j--) {
+            for (j = len; j >= i; j--) {
                 hand_stack[j + 1] = hand_stack[j]
                 bid_stack[j + 1] = bid_stack[j]
             }
@@ -170,15 +172,18 @@ function insert_by_rank_sorted(hand_stack, bid_stack, hand, bid, v, i, j) {
             bid_stack[i] = bid
             hand_stack[0]++ # increment length of stack
             bid_stack[0]++ # increment length of stack
-            if (v != value_by_hand(hand_stack[i + 1])) return
+            print "inserted", hand, bid, "at", i, "value:", v, "?<?", value_by_hand(hand_stack[i + 1]), hand_stack[i + 1]
+            if (v < value_by_hand(hand_stack[i + 1])) return
             # they have the same value, break the tie
             # first attempt assumed there was only one tie
             # need to walk through the list until we find not a tie
             # by then it should be inserted correctly
             # forgot to also stop when value changes: Fixed
-            for (j = i; j < hand_stack[0]; j++) {
-                if (value_by_hand(hand_stack[j]) > v) {
-                    break
+            for (j = i; j <= len; j++) {
+                print "comparing at", j, hand_stack[j], hand_stack[j + 1]
+                if (value_by_hand(hand_stack[j+1]) > v) {
+                    print "end of this type found", hand_stack[j], ">", v, value_by_hand(hand_stack[j+1])
+                    return
                 }
                 _which_bigger = break_tie(hand_stack[j], hand_stack[j + 1])
                 if (_which_bigger == 1) {
