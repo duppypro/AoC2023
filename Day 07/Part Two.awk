@@ -92,30 +92,20 @@ function value_by_hand(hand, key, i, v, values, _cards, _counts, len) {
     for (key = 1; key <= len; key++) {
         value = substr(hand, key, 1)
         _counts[value]++
-        # printf "%sx%d ", value, _counts[value]
     }
-    # printf "\n"
     
     maybe_full_house = false
     maybe_two_pair = false
     lone_cards = 0
-    joker_count = _counts["J"] || 0
+    joker_count = +_counts["J"]
     delete _counts["J"]
-    # print "   ", hand, "has", joker_count, "Js"
     if (joker_count >= 4) {
         return 70 # Five of a kind
     }
-    # printf "    "
-    # for (key in _counts) {
-    #     printf " '%s' x %d", key, _counts[key] 
-    # }
-    # printf "\n"
     for (key in _counts) {
-        # if (key == "J") {
-        #     continue
-        # }
-        num = _counts[key]
-        if (num > 5 || num < 1) {
+        num = +_counts[key] # Don't forget the '+' to cast to int!!!
+        if (num > 5 || num < 0) {
+            print "count range error", num
             return -1 # error
         }
         if (num == 5) {
@@ -132,6 +122,7 @@ function value_by_hand(hand, key, i, v, values, _cards, _counts, len) {
         }
         if (num == 3) {
             if (joker_count >= 3 || joker_count < 0) {
+                print "joker count range error", joker_count, "at", key
                 return -1 # error
             }
             if (joker_count == 2) {
@@ -148,12 +139,14 @@ function value_by_hand(hand, key, i, v, values, _cards, _counts, len) {
         if (num == 2) {
             if (maybe_two_pair) {
                 if (maybe_full_house) {
+                    print "two pair and full house is 7 cards error"
                     return -1 # error    50 # Full house
                 }
                 if (joker_count == 1) {
                     return 50 # Full house
                 }
                 if (joker_count > 1) {
+                    print "2 pairs and more than 1 joker is more than 5", joker_count
                     return -1 # error
                 }
                 return 30 # Two pair
