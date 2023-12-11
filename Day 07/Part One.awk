@@ -144,10 +144,14 @@ function push(stack, v) {
 function break_tie(h1, h2, i, v1, v2, len) {
     len = length(h1)
     for (i = 1; i <= len; i++) {
-        v1 = substr(h1, i, 1)
-        v2 = substr(h2, i, 1)
-        if (v1 > v2) return +1
-        if (v1 < v2) return -1
+        v1 = value_of_cards[substr(h1, i, 1)]
+        v2 = value_of_cards[substr(h2, i, 1)]
+        if (v1 > v2) {
+            return +1
+            }
+        if (v1 < v2) {
+            return -1
+        }
         # must be equal, continue
     }
     return 0 # all positions were equal
@@ -165,15 +169,27 @@ function insert_by_rank_sorted(hand_stack, bid_stack, hand, bid, v, i, j) {
             hand_stack[i] = hand
             bid_stack[i] = bid
             hand_stack[0]++ # increment length of stack
+            bid_stack[0]++ # increment length of stack
             if (v != value_by_hand(hand_stack[i + 1])) return
             # they have the same value, break the tie
-            _which_bigger = break_tie(hand, hand_stack[i + 1])
-            if (_which_bigger == -1) {
-                # the new hand is bigger, so swap
-                hand_stack[i] = hand_stack[i + 1]
-                hand_stack[i + 1] = hand
-                bid_stack[i] = bid_stack[i + 1]
-                bid_stack[i + 1] = bid
+            # first attempt assumed there was only one tie
+            # need to walk through the list until we find not a tie
+            # by then it should be inserted correctly
+            # forgot to also stop when value changes: Fixed
+            for (j = i; j < hand_stack[0]; j++) {
+                if (value_by_hand(hand_stack[j]) > v) {
+                    break
+                }
+                _which_bigger = break_tie(hand_stack[j], hand_stack[j + 1])
+                if (_which_bigger == 1) {
+                    # the next hand is smaller, so swap
+                    temp = hand_stack[j + 1]
+                    hand_stack[j + 1] = hand_stack[j]
+                    hand_stack[j] = temp
+                    temp = bid_stack[j + 1]
+                    bid_stack[j + 1] = bid_stack[j]
+                    bid_stack[j] = temp
+                }
             }
             return
         }
