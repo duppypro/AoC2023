@@ -1,11 +1,11 @@
 Ranked lowest to highest. 5 hands
 1: 20 32T3K 765 subtotal = 765
-2: 30 KTJJT 220 subtotal = 1205
-3: 30 KK677 28 subtotal = 1289
-4: 40 T55J5 684 subtotal = 4025
-5: 40 QQQJA 483 subtotal = 6440
+2: 30 KK677 28 subtotal = 821
+3: 60 T55J5 684 subtotal = 2873
+4: 60 QQQJA 483 subtotal = 4805
+5: 60 KTJJT 220 subtotal = 5905
 
 Sample should be: 32T3K, KK677, T55J5, QQQJA, KTJJT
     Sample total winnings 5905.
 
-Total winnings are 6440.
+Total winnings are 5905.

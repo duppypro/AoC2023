@@ -97,14 +97,30 @@ function value_by_hand(hand, key, i, v, values, _cards, _counts) {
     maybe_full_house = false
     maybe_two_pair = false
     lone_cards = 0
+    joker_count = _counts["J"]
     for (key in _counts) {
+        if (key == "J") {
+            if(joker_count >= 4) {
+                return 70 # Five of a kind
+            }
+            continue
+        }
         if (_counts[key] == 5) {
             return 70 # Five of a kind
         }
         if (_counts[key] == 4) {
+            if (joker_count) {
+                return 70 # Five of a kind
+            }
             return 60 # Four of a kind
         }
         if (_counts[key] == 3) {
+            if (joker_count == 2) {
+                return 70 # Five of a kind
+            }
+            if (joker_count == 1) {
+                return 60 # Four of a kind
+            }
             if (maybe_two_pair) {
                 return 50 # Full house
             }
@@ -115,7 +131,16 @@ function value_by_hand(hand, key, i, v, values, _cards, _counts) {
                 return 50 # Full house
             }
             if (maybe_two_pair) {
+                if (joker_count == 1) {
+                    return 50 # Full house
+                }
                 return 30 # Two pair
+            }
+            if (joker_count == 3) {
+                return 70 # Five of a kind
+            }
+            if (joker_count == 2) {
+                return 60 # Four of a kind
             }
             maybe_two_pair = true
         }
@@ -124,9 +149,24 @@ function value_by_hand(hand, key, i, v, values, _cards, _counts) {
         }
     }
     if (maybe_full_house) {
+        if (joker_count == 1) {
+            return 70 # Five of a kind
+        }
+        if (joker_count == 2) {
+            return 60 # Four of a kind
+        }
         return 40 # Three of a kind
     }
     if (maybe_two_pair) {
+        if (joker_count == 3) {
+            return 70 # Five of a kind
+        }
+        if (joker_count == 2) {
+            return 60 # Four of a kind
+        }
+        if (joker_count == 1) {
+            return 50 # Full house
+        }
         return 20 # One pair
     }
     if (lone_cards == 5) {
@@ -138,8 +178,8 @@ function value_by_hand(hand, key, i, v, values, _cards, _counts) {
 BEGIN {
     true = 1; false = 0
 
-    split("1 2 3 4 5 6 7 8 9 T J Q K A", values, " ")
-    # we never use the '1' it's there to make the face values 2 match 2, 3 match 3, etc
+    split("J 2 3 4 5 6 7 8 9 T X Q K A", values, " ")
+    # J is now Joker and there is no Jack.
     delete value_of_cards
     for (key in values) {
         value_of_cards[values[key]] = +key # remember the '+' for an int!!!!!!!!
