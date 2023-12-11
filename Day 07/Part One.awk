@@ -145,21 +145,58 @@ function push(stack, v) {
     stack[++stack[0]] = v
 }
 
-function insert_by_rank_sorted(hand_stack, bid_stack, v, bid, hand, i, j) {
+function break_tie(h1, h2, i, v1, v2, len) {
+    print "break_tie", h1, h2
+    len = length(h1)
+    for (i = 1; i <= len; i++) {
+        v1 = substr(h1, i, 1)
+        v2 = substr(h2, i, 1)
+        if (v1 > v2) {
+            print "v1 > v2", v1, ">" v2
+            return +1
+        }
+        if (v1 < v2) {
+            print "v1 < v2", v1, "<", v2
+            return -1
+        }
+        # must be equal, continue
+    }
+    print "h1 == h2", h1, "==", h2
+    return 0 # all positions were equal
+}
+
+function insert_by_rank_sorted(hand_stack, bid_stack, hand, bid, v, i, j) {
+    v = value_by_hand(hand)
+    print "insert_by_rank_sorted", hand, bid, "value", v, "LEN", length(hand_stack)
     for (i = 1; i <= hand_stack[0]; i++) {
-        if (v <= hand_stack[i]) { # lowest value is rank 1
+        if (v <= value_by_hand(hand_stack[i])) { # lowest value is rank 1
             # insert here
             for (j = hand_stack[0]; j >= i; j--) {
                 hand_stack[j + 1] = hand_stack[j]
                 bid_stack[j + 1] = bid_stack[j]
             }
-            hand_stack[i] = v
+            hand_stack[i] = hand
             bid_stack[i] = bid
             hand_stack[0]++ # increment length of stack
+            print "    INSERTED", hand, "AT", i
+            if (v != value_by_hand(hand_stack[i + 1])) {
+                return
+            }
+            # they have the same value, break the tie
+            _which_bigger = break_tie(hand, hand_stack[i + 1])
+            if (_which_bigger == -1) {
+                # the new hand is bigger, so swap
+                print "Inserting", hand, "SWAP", hand_stack[i], hand_stack[i + 1]    
+                hand_stack[i] = hand_stack[i + 1]
+                hand_stack[i + 1] = hand
+                bid_stack[i] = bid_stack[i + 1]
+                bid_stack[i + 1] = bid
+                print "SWAPPED", hand_stack[i], hand_stack[i + 1]
+            }
             return
         }
     }
-    push(hand_stack, v)
+    push(hand_stack, hand)
     push(bid_stack, bid)
 }
 
@@ -172,7 +209,7 @@ END {
         hand = hands[key]
         bid = bids[key]
         v = value_by_hand(hand)
-        insert_by_rank_sorted(hand_by_rank, bid_by_rank, v, bid, hand)
+        insert_by_rank_sorted(hand_by_rank, bid_by_rank, hand, bid)
         print hand, bid, "hand value", v
     }
     printf "\n-----\n\n"
@@ -181,7 +218,8 @@ END {
     len = hand_by_rank[0] # using an array as a stack where a[0] = len and a[1]..a[len] are the stack
     print "LENGTH(hand_by_rank) = " l
     for (i = 1; i <= len; i++) {
-        print "hand_by_rank[" i "] = " hand_by_rank[i] " bid = " bid_by_rank[i]
+        total_winnings += bid_by_rank[i] * i
+        print "hand_by_rank[" i "] = " hand_by_rank[i] " bid = " bid_by_rank[i] " subtotal = " total_winnings
     }
 
     printf "\n"

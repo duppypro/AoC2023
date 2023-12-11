@@ -1,20 +1,34 @@
 HANDS BIDS
+insert_by_rank_sorted 32T3K 765 value 20 LEN 0
 32T3K 765 hand value 20
+insert_by_rank_sorted T55J5 684 value 40 LEN 2
 T55J5 684 hand value 40
+insert_by_rank_sorted KK677 28 value 30 LEN 3
+    INSERTED KK677 AT 2
 KK677 28 hand value 30
+insert_by_rank_sorted KTJJT 220 value 30 LEN 4
+    INSERTED KTJJT AT 2
+break_tie KTJJT KK677
+v1 > v2 T >K
 KTJJT 220 hand value 30
+insert_by_rank_sorted QQQJA 483 value 40 LEN 5
+    INSERTED QQQJA AT 4
+break_tie QQQJA T55J5
+v1 < v2 Q < T
+Inserting QQQJA SWAP QQQJA T55J5
+SWAPPED T55J5 QQQJA
 QQQJA 483 hand value 40
 
 -----
 
 LENGTH(hand_by_rank) = 5
-hand_by_rank[1] = 20 bid = 765
-hand_by_rank[2] = 30 bid = 220
-hand_by_rank[3] = 30 bid = 28
-hand_by_rank[4] = 40 bid = 483
-hand_by_rank[5] = 40 bid = 684
+hand_by_rank[1] = 32T3K bid = 765 subtotal = 765
+hand_by_rank[2] = KTJJT bid = 220 subtotal = 1205
+hand_by_rank[3] = KK677 bid = 28 subtotal = 1289
+hand_by_rank[4] = T55J5 bid = 684 subtotal = 4025
+hand_by_rank[5] = QQQJA bid = 483 subtotal = 6440
 
 So the total winnings in sample.txt are 6440.
  (765 * 1 + 220 * 2 + 28 * 3 + 684 * 4 + 483 * 5)
 
-Total winnings are 0.
+Total winnings are 6440.
