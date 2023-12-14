@@ -4,6 +4,29 @@
 #########################################################################
 # functions here
 
+function gcd(x, y) {
+    if (x == 0) {
+        return y
+    }
+    if (y == 0) {
+        return x
+    }
+    if (x == y) {
+        return x
+    }
+    if (x > y) {
+        return gcd(x - y, y)
+    }
+    return gcd(x, y - x)
+}
+
+function lcm(x, y) {
+    if (x == 0 || y == 0) {
+        return 0
+    }
+    return (x * y) / gcd(x, y)
+}
+
 #########################################################################
 # BEGIN
 BEGIN {
@@ -62,35 +85,58 @@ BEGIN {
 }
 
 END {
+    # new idea - only track to the period of each, then calculate LCM of all once found?
+
+    # print lcm(1, 2)
+    # print lcm(7000, 3000)
+    # print lcm(14999, 200093)
     total_steps = 0
-    # printf "#%d: start", total_steps
-    # for (key in start_list) {
-    #     split(start_list[key], chars, "")
-    #     printf " %s", chars[3]
-    # }
-    # printf "\n"
-    while (!all_Zs && total_steps < 1000000) {
+    cycles_not_found = length(start_list)
+    printf "#%d: %d starts", total_steps, length(start_list)
+    for (key in start_list) {
+        split(start_list[key], chars, "")
+        printf " %s", chars[3]
+    }
+    printf "\n"
+    delete first_Z_list
+    while (cycles_not_found && total_steps < 100000000000) {
+        total_steps++
         all_Zs = true
         dir = steps[head]
         head = (head + 1) % LEN
-        # printf "#%d: %s to ", total_steps + 1, dir
         for (key in start_list) {
             you_are_here = start_list[key]
             if (dir == "L") {
-                fork = left_fork[you_are_here]
-            } else if (dir == "R") {
-                fork = right_fork[you_are_here]
+                you_are_here = left_fork[you_are_here]
             }
-            you_are_here = fork
+            if (dir == "R") {
+                you_are_here = right_fork[you_are_here]
+            }
             start_list[key] = you_are_here
-            split(you_are_here, chars, "")
-            # printf " %s", chars[3] == "Z" ? "Z" : "-"
-            if (chars[3] != "Z") {
-                all_Zs = false
+            if (substr(you_are_here, 3, 1) == "Z") {
+                if (!first_Z_list[cycles_not_found]) {
+                    first_Z_list[cycles_not_found] = total_steps
+                    cycles_not_found--
+                    printf "#%d: steps found one! ", total_steps
+                    for (k2 in start_list) {
+                        printf " %s = %d,", start_list[k2], first_Z_list[k2]
+                    }
+                    printf "\n"
+                }
             }
         }
-        # printf "\n"
-        total_steps++
+        if (total_steps % 1000000 == 0) {
+            printf "%d Million steps", total_steps / 1000000
+            printf "\n"
+        }
     }
-    printf "\nTotal steps to reach all xxZs: %d\n", total_steps
+    lcm_of_all = first_Z_list[1]
+    i = 1
+    print i, lcm_of_all
+    for (i = 2; i <= length(first_Z_list); i++) {
+        printf "%d LCM of %d and %d", i, lcm_of_all, first_Z_list[i]
+        lcm_of_all = lcm(lcm_of_all, first_Z_list[i])
+        printf " is %d\n", lcm_of_all
+    }
+    printf "\nTotal steps to reach all xxZs: %d\n", lcm_of_all
 }

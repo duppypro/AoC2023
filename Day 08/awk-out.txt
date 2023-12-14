@@ -1,3 +1,4 @@
 RL
+#0: 2 starts A A
 
 Total steps to reach all xxZs: 6
