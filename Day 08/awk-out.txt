@@ -1,0 +1,12 @@
+RLL
+node AAA has left fork BBB and right fork BBB
+node BBB has left fork AAA and right fork ZZZ
+node ZZZ has left fork ZZZ and right fork ZZZ
+from AAA go L to BBB
+from BBB go L to AAA
+from AAA go R to BBB
+from BBB go L to AAA
+from AAA go L to BBB
+from BBB go R to ZZZ
+
+Total steps to reach ZZZ: 6
