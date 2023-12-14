@@ -99,7 +99,7 @@ END {
     }
     you_are_here = start
     total_steps = 0
-    while (you_are_here != dest && total_steps < 12) {
+    while (you_are_here != dest && total_steps < 1000000) {
         dir = steps[head]
         head = (head + 1) % LEN
         if (dir == "L") {
@@ -109,9 +109,9 @@ END {
         } else {
             printf "\n*****\nERROR: invalid direction: %s\n*****\n", dir
         }
-        printf "from %s go %s to %s\n", you_are_here, dir, fork
-        you_are_here = fork
         total_steps++
+        printf "Step %d from %s go %s to %s\n", total_steps, you_are_here, dir, fork
+        you_are_here = fork
     }
     printf "\nTotal steps to reach ZZZ: %d\n", total_steps
 }
