@@ -51,7 +51,7 @@ BEGIN {
     this_right = substr($4, 1, 3)
     left_fork[dest] = this_left
     right_fork[dest] = this_right
-    printf "MAP: from %s, L goes to %s and R goes to %s\n", dest, this_left, this_right
+    # printf "MAP: from %s, L goes to %s and R goes to %s\n", dest, this_left, this_right
 }
 
 !/^$/ {
@@ -63,10 +63,17 @@ BEGIN {
 
 END {
     total_steps = 0
+    # printf "#%d: start", total_steps
+    # for (key in start_list) {
+    #     split(start_list[key], chars, "")
+    #     printf " %s", chars[3]
+    # }
+    # printf "\n"
     while (!all_Zs && total_steps < 1000000) {
         all_Zs = true
         dir = steps[head]
         head = (head + 1) % LEN
+        # printf "#%d: %s to ", total_steps + 1, dir
         for (key in start_list) {
             you_are_here = start_list[key]
             if (dir == "L") {
@@ -74,15 +81,15 @@ END {
             } else if (dir == "R") {
                 fork = right_fork[you_are_here]
             }
-            printf "#%d: %s takes %s to %s", total_steps + 1, you_are_here, dir, fork
             you_are_here = fork
             start_list[key] = you_are_here
             split(you_are_here, chars, "")
+            # printf " %s", chars[3] == "Z" ? "Z" : "-"
             if (chars[3] != "Z") {
                 all_Zs = false
             }
-            printf ", all_Zs? %s\n", all_Zs ? "true" : "false"
         }
+        # printf "\n"
         total_steps++
     }
     printf "\nTotal steps to reach all xxZs: %d\n", total_steps
