@@ -17,16 +17,17 @@ def parse_stdin():
 def parse_line(line):
     line = line.strip()
     numbers = [int(n) for n in line.split(' ')]
-    next_num = next_value(numbers)[-1]
+    next = next_value(numbers)
+    next_num = next[-1]
     global total
     total += next_num
     print(f'{line} -> {next_num}\n', end='')
     return
 # end parse()
 
-def next_value(in_numbers: list) -> list:
-    numbers = in_numbers.copy()
-    if numbers[-1] == 0:
+def next_value(numbers: list) -> list:
+    # BUG it's probably this check here. FIX to check all numbers!
+    if numbers == [0] * len(numbers):
         return numbers  
     diffs = []
     sum_of_diffs = 0
@@ -34,9 +35,11 @@ def next_value(in_numbers: list) -> list:
         diffs.append(numbers[i + 1] - numbers[i])
         sum_of_diffs += diffs[-1]
     # print(f'    diffs = {diffs}')
-    next_num = next_value(diffs).copy()
-    numbers.append(numbers[-1] + next_num[-1])
-    return numbers.copy()
+    next = next_value(diffs)
+    next_num = next[-1]
+    ret_numbers = numbers.copy()
+    ret_numbers.append(numbers[-1] + next_num)
+    return ret_numbers
 # end next_value()
 
 
