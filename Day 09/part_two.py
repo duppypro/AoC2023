@@ -18,10 +18,10 @@ def parse_line(line):
     line = line.strip()
     numbers = [int(n) for n in line.split(' ')]
     next = next_value(numbers)
-    next_num = next[-1]
+    next_num = next[0]
     global total
     total += next_num
-    print(f'{line} -> {next_num}\n', end='')
+    print(f'{next_num} <- {line}\n', end='')
     return
 # end parse()
 
@@ -29,19 +29,17 @@ def next_value(numbers: list) -> list:
     if numbers == [0] * len(numbers):
         return numbers  
     diffs = []
-    sum_of_diffs = 0
     for i in range(len(numbers) - 1):
         diffs.append(numbers[i + 1] - numbers[i])
-        sum_of_diffs += diffs[-1]
     next = next_value(diffs)
-    return numbers + [numbers[-1] + next[-1]]
+    return [numbers[0] - next[0]] + numbers
 # end next_value()
 
 
 if __name__ == '__main__':
     total = 0
     parse_stdin()
-    print(f'\n    sample.txt expects 18 + 28 + 68 = 114')
+    print(f'\n    sample.txt expects -3 + 0 + 5 = 2')
     print(f'        total = {total}')
     # add total to the system clipboard
     pyperclip.copy(total)

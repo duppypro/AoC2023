@@ -29,10 +29,8 @@ def next_value(numbers: list) -> list:
     if numbers == [0] * len(numbers):
         return numbers  
     diffs = []
-    sum_of_diffs = 0
     for i in range(len(numbers) - 1):
         diffs.append(numbers[i + 1] - numbers[i])
-        sum_of_diffs += diffs[-1]
     next = next_value(diffs)
     return numbers + [numbers[-1] + next[-1]]
 # end next_value()
