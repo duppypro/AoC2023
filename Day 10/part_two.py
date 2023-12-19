@@ -3,8 +3,8 @@
 #
 # $ source ./env/bin/activate
 #
-# Day 10: Part One
-# https://adventofcode.com/2023/day/10
+# Day 10: Part Two
+# https://adventofcode.com/2023/day/10#part2
 #
 ####################################################################################################
 
