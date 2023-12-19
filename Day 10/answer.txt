@@ -1,12 +1,48 @@
 BEGIN
-7-F7-
-.FJ|7
-SJLL7
-|F--J
-LJ.LJ
 EOF: file closed
+
 END
+─└│┌┐
+┐X─┐│
+└│┐││
+─└─┘│
+└│─┘┌
+
+num_steps = 0
+─└│┌┐
+┐0─┐│
+└│┐││
+─└─┘│
+└│─┘┌
+
+num_steps = 1
+─└│┌┐
+┐01┐│
+└1┐││
+─└─┘│
+└│─┘┌
+
+num_steps = 2
+─└│┌┐
+┐012│
+└1┐││
+─2─┘│
+└│─┘┌
+
+num_steps = 3
+─└│┌┐
+┐012│
+└1┐3│
+─23┘│
+└│─┘┌
+
+num_steps = 4
+─└│┌┐
+┐012│
+└1┐3│
+─234│
+└│─┘┌
     sample_1.txt expects answer = 4
     sample_2.txt expects answer = 8
-        answer = 5
-        5 copied to clipboard
+        answer = 4
+        4 copied to clipboard
