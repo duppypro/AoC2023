@@ -1,0 +1,53 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: ${file} < input.txt",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "type": "python",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}/Day 10",
+        },
+        {
+            "name": "Python: ${file} < sample_1.txt",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "type": "python",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}/Day 10",
+            "args": [
+                "-input",
+                "sample_1.txt"
+            ],
+        },
+        {
+            "name": "Python: ${file} < sample_2.txt",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "type": "python",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}/Day 10",
+            "args": [
+                "-input",
+                "sample_2.txt"
+            ],
+        },
+        {
+            "console": "externalTerminal",
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\puzzle-02\\star1.js"
+        },
+    ]
+}

@@ -1,0 +1,12 @@
+BEGIN
+7-F7-
+.FJ|7
+SJLL7
+|F--J
+LJ.LJ
+EOF: file closed
+END
+    sample_1.txt expects answer = 4
+    sample_2.txt expects answer = 8
+        answer = 5
+        5 copied to clipboard

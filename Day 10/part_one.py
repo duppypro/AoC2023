@@ -3,8 +3,8 @@
 #
 # $ source ./env/bin/activate
 #
-# BOILERPLATE
-# https://adventofcode.com/2023
+# Day 10: Part One
+# https://adventofcode.com/2023/day/10
 #
 ####################################################################################################
 
@@ -46,8 +46,8 @@ if __name__ == '__main__':
         answer = parse_file(args.input or 'input.txt', answer)
         
         answer = end(answer)
-        print('    sample_1.txt expects answer = ???')
-        print('    sample_2.txt expects answer = ???')
+        print('    sample_1.txt expects answer = 4')
+        print('    sample_2.txt expects answer = 8')
         print(f'        answer = {answer}')
         pyperclip.copy(answer)
         print(f'        {answer} copied to clipboard')
