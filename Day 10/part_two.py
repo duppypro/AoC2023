@@ -14,22 +14,43 @@ import argparse
 
 pipe_2d = []
 dist_2d = []
-criter_location = [-1, -1]
+critter_location = [-1, -1]
 
-def print_2d():
-    loc = [0,0]
-    for row in pipe_2d:
-        loc[1] = 0
-        for char in row:
-            dist = int(peek_2d(dist_2d, loc))
-            if dist > 0:
-                print(f'{dist % 10}', end='')
-            else:
-                print(char, end='')
-            loc[1] += 1
-        print()
-        loc[0] += 1
+# Define some ANSI escape codes for colors
+RED = '\033[31m'
+GREEN = '\033[32m'
+BLUE = '\033[34m'
+RESET = '\033[0m'
+
+# Print some colored text
+print(f'{RED}This text is red.{RESET}')
+print(f'{GREEN}This text is green.{RESET}')
+print(f'{BLUE}This text is blue.{RESET}')
+
+def main():
+    OG_stdout = sys.stdout
+
+    with open('answer.txt', 'w') as sys.stdout:
+        answer = begin()
+        
+        parser = argparse.ArgumentParser(description='get name of input file')
+        parser.add_argument('-input', type=str, help='the input file for stdin')
+        args = parser.parse_args()
+        
+        answer = parse_file(args.input or 'input.txt', answer)
+        
+        answer = end(answer)
+        print('    sample_1.txt expects answer = 4')
+        print('    sample_2.txt expects answer = 8')
+        print(f'        answer = {answer}')
+        pyperclip.copy(answer)
+        print(f'        {answer} copied to clipboard')
     
+    sys.stdout = OG_stdout
+    print(f'File closed, answer = {answer}')
+# end main()
+
+
 def begin(answer=0):
     answer = 0
     print('BEGIN')
@@ -45,36 +66,10 @@ def parse_file(input, answer):
     print(f'EOF: file closed')
     return answer
 
-def clip(x, _min, _max):
-    return max(_min, min(_max, x))
-
-def move_2d(start, delta):
-    row = clip(start[0] + delta[0], 0, len(pipe_2d) - 1)
-    col = clip(start[1] + delta[1], 0, len(pipe_2d[row]) - 1)
-    return [row, col]
-
-def peek_2d(array_2d, location):
-    row = location[0]
-    col = location[1]
-    if row < 0 or row >= len(array_2d):
-        return ' '
-    if col < 0 or col >= len(array_2d[0]):
-        return ' '  
-    return array_2d[row][col]
-
-def poke_2d(array_2d, location, value):
-    row = location[0]
-    col = location[1]
-    if row < 0 or row >= len(array_2d):
-        return
-    if col < 0 or col >= len(array_2d[0]):
-        return  
-    array_2d[location[0]][location[1]] = value
-
 def end(answer):
     print('\nEND')
-    left_fill = criter_location.copy() # don't really need to copy in this case
-    right_fill = criter_location.copy()
+    left_fill = critter_location.copy() # don't really need to copy in this case
+    right_fill = critter_location.copy()
     num_steps = -1
     while peek_2d(dist_2d, left_fill) == -1:
         num_steps += 1
@@ -105,16 +100,16 @@ def end(answer):
         if num_steps % 100 == 0:
             print_2d()
         
-        
     return num_steps
+# end end()
 
 def parse_line(line, row, answer):
     line = line.strip()
     for char in line:
         pretty = map_prettier(char)
         if pretty == 'X':
-            criter_location[0] = len(pipe_2d)
-            criter_location[1] = len(row)
+            critter_location[0] = len(pipe_2d)
+            critter_location[1] = len(row)
         row.append(pretty)
     return answer
 
@@ -124,23 +119,45 @@ def map_prettier(char):
     to_prettier = dict(zip(c, p))
     return to_prettier[char]
 
-if __name__ == '__main__':
-    OG_stdout = sys.stdout
-    with open('answer.txt', 'w') as sys.stdout:
-        answer = begin()
-        
-        parser = argparse.ArgumentParser(description='get name of input file')
-        parser.add_argument('-input', type=str, help='the input file for stdin')
-        args = parser.parse_args()
-        
-        answer = parse_file(args.input or 'input.txt', answer)
-        
-        answer = end(answer)
-        print('    sample_1.txt expects answer = 4')
-        print('    sample_2.txt expects answer = 8')
-        print(f'        answer = {answer}')
-        pyperclip.copy(answer)
-        print(f'        {answer} copied to clipboard')
+def print_2d():
+    loc = [0,0]
+    for row in pipe_2d:
+        loc[1] = 0
+        for char in row:
+            dist = int(peek_2d(dist_2d, loc))
+            if dist > 0:
+                print(f'{GREEN}{dist % 10}{RESET}', end='')
+            else:
+                print(f'{BLUE}{char}{RESET}', end='')
+            loc[1] += 1 # col count
+        print() # next line
+        loc[0] += 1 # row count
     
-    sys.stdout = OG_stdout
-    print(f'File closed, answer = {answer}')
+def clip(x, _min, _max):
+    return max(_min, min(_max, x))
+
+def move_2d(start, delta):
+    row = clip(start[0] + delta[0], 0, len(pipe_2d) - 1)
+    col = clip(start[1] + delta[1], 0, len(pipe_2d[row]) - 1)
+    return [row, col]
+
+def peek_2d(array_2d, location):
+    row = location[0]
+    col = location[1]
+    if row < 0 or row >= len(array_2d):
+        return ' '
+    if col < 0 or col >= len(array_2d[0]):
+        return ' '  
+    return array_2d[row][col]
+
+def poke_2d(array_2d, location, value):
+    row = location[0]
+    col = location[1]
+    if row < 0 or row >= len(array_2d):
+        return
+    if col < 0 or col >= len(array_2d[0]):
+        return  
+    array_2d[location[0]][location[1]] = value
+
+if __name__ == '__main__':
+    main()
