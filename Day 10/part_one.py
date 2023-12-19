@@ -78,7 +78,6 @@ def poke_2d(array_2d, location, value):
 
 def end(answer):
     print('\nEND')
-    print_2d()
     left_fill = criter_location.copy() # don't really need to copy in this case
     right_fill = criter_location.copy()
     num_steps = -1
@@ -108,7 +107,8 @@ def end(answer):
         poke_2d(pipe_2d, old_left_fill, f'{num_steps % 10}')
         poke_2d(pipe_2d, old_right_fill, f'{num_steps % 10}')
         print(f'\nnum_steps = {num_steps}')
-        print_2d()
+        if num_steps % 100 == 0:
+            print_2d()
         
         
     return num_steps
